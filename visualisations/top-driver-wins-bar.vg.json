@@ -5,7 +5,7 @@
     "height": "container",
     "autosize": {"type": "fit", "contains": "padding"},
     "data": {
-        "url": "../f1-data/results.csv",
+        "url": "./f1-data/results.csv",
         "format": {"type": "csv"}
     },
 
