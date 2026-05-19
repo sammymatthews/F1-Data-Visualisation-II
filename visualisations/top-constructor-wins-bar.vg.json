@@ -6,7 +6,7 @@
     "autosize": {"type": "fit"},
     "background": "transparent",
     "data": {
-        "url": "./f1-data/results.csv",
+        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/results.csv",
         "format": {"type": "csv"}
     },
 
@@ -14,7 +14,7 @@
         {
             "lookup": "constructorId",
             "from": {
-                "data": {"url": "./f1-data/constructors.csv"},
+                "data": {"url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/constructors.csv"},
                 "key": "constructorId",
                 "fields": ["name"]
             },
