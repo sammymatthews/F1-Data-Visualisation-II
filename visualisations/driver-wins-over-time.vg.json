@@ -6,14 +6,14 @@
     "autosize": {"type": "fit"},
     "background": "transparent",
     "data": {
-        "url": "./f1-data/driver_standings.csv",
+        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/driver_standings.csv",
         "format": {"type": "csv"}
     },
     "transform": [
         {
             "lookup": "driverId",
             "from": {
-            "data": {"url": "./f1-data/drivers.csv"},
+            "data": {"url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/drivers.csv"},
             "key": "driverId",
             "fields": ["forename", "surname"]
             },
@@ -26,7 +26,7 @@
         {
             "lookup": "raceId",
             "from": {
-            "data": {"url": "./f1-data/races.csv"},
+            "data": {"url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv"},
             "key": "raceId",
             "fields": ["year", "round"]
             }
