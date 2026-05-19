@@ -7,7 +7,7 @@
         "type": "fit"
     },
     "data": {
-        "url": "./f1-data/drivers_cleaned.csv",
+        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/drivers_cleaned.csv",
         "format": {
             "type": "csv"
         }
