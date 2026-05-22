@@ -1,15 +1,27 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "Winner Driver Nationalities (2000-2024)",
     "width": "container",
     "height": "container",
     "autosize": {
         "type": "fit"
     },
+    "background": "transparent",
     "data": {
-        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/driver_standings.csv",
+        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/results.csv",
         "format": {
             "type": "csv"
+        }
+    },
+    "config": {
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
         }
     },
     "transform": [
@@ -21,24 +33,55 @@
                 },
                 "key": "raceId",
                 "fields": [
-                    "year",
-                    "round"
+                    "year"
                 ]
             }
         },
         {
-            "calculate": "toNumber(datum.round)",
-            "as": "round"
+            "lookup": "driverId",
+            "from": {
+                "data": {
+                    "url": "./f1-data/drivers_cleaned.csv"
+                },
+                "key": "driverId",
+                "fields": [
+                    "Continent"
+                ]
+            }
         },
         {
-            "filter": "datum.position == '1'"
+            "window": [
+                {
+                    "op": "row_number",
+                    "as": "rowNum"
+                }
+            ],
+            "groupby": [
+                "year",
+                "driverId"
+            ]
+        },
+        {
+            "filter": "datum.rowNum == 1"
+        },
+        {
+            "aggregate": [
+                {
+                    "op": "count",
+                    "as": "continentCount"
+                }
+            ],
+            "groupby": [
+                "year",
+                "Continent"
+            ]
         },
         {
             "joinaggregate": [
                 {
-                    "op": "max",
-                    "field": "round",
-                    "as": "finalRound"
+                    "op": "sum",
+                    "field": "continentCount",
+                    "as": "yearTotal"
                 }
             ],
             "groupby": [
@@ -46,49 +89,50 @@
             ]
         },
         {
-            "filter": "toNumber(datum.round) == toNumber(datum.finalRound) && toNumber(datum.year) >= 2000"
-        },
-        {
-            "lookup": "driverId",
-            "from": {
-                "data": {
-                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/drivers.csv"
-                },
-                "key": "driverId",
-                "fields": [
-                    "nationality"
+            "calculate": "datum.yearTotal > 0 ? datum.continentCount / datum.yearTotal : 0",
+            "as": "proportion"
+        }
+    ],
+    "mark": "area",
+    "encoding": {
+        "x": {
+            "field": "year",
+            "type": "quantitative",
+            "axis": {
+                "format": "d",
+                "tickMinStep": 1
+            },
+            "scale": {
+                "domain": [
+                    1950,
+                    2024
                 ]
             }
         },
-        {
-            "aggregate": [
-                {
-                    "op": "count",
-                    "field": "positionOrder",
-                    "as": "totalWins"
-                }
-            ],
-            "groupby": [
-                "nationality"
-            ]
-        }
-    ],
-    "mark": {
-        "type": "arc"
-    },
-    "encoding": {
-        "theta": {
-            "field": "totalWins",
-            "type": "quantitative"
+        "y": {
+            "field": "proportion",
+            "type": "quantitative",
+            "axis": {
+                "format": "%"
+            },
+            "scale": {
+                "domain": [
+                    0,
+                    1
+                ]
+            },
+            "title": "Proportion of Drivers",
+            "impute": {
+                "value": 0
+            }
         },
         "color": {
-            "field": "nationality",
-            "type": "nominal"
-        },
-        "order": {
-            "field": "totalWins",
-            "type": "quantitative",
-            "sort": "descending"
+            "field": "Continent",
+            "type": "nominal",
+            "sort": {
+                "field": "proportion",
+                "order": "descending"
+            }
         }
     }
 }

@@ -1,0 +1,107 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "F1 Circuits around the globe",
+    "width": "container",
+    "height": "container",
+    "autosize": {
+        "type": "fit",
+        "contains": "padding"
+    },
+    "background": "transparent",
+    "projection": {
+        "type": "equalEarth"
+    },
+    "layer": [
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/ne_110m.json",
+                "format": {
+                    "type": "topojson",
+                    "feature": "ne_110m_admin_0_countries"
+                }
+            },
+            "mark": {
+                "type": "geoshape",
+                "fill": "white",
+                "stroke": "lightgray"
+            }
+        },
+        {
+            "data": {
+                "url": "../f1-data/circuit_flows.csv",
+                "format": {
+                    "type": "csv"
+                }
+            },
+            "mark": {
+                "type": "rule",
+                "strokeCap": "round",
+                "stroke": {
+                    "gradient": "linear",
+                    "stops": [
+                        {
+                            "offset": 0,
+                            "color": "#ff4d4dc0"
+                        },
+                        {
+                            "offset": 1,
+                            "color": "rgba(255, 255, 255, 0.3)"
+                        }
+                    ]
+                }
+            },
+            "encoding": {
+                "longitude": {
+                    "field": "lng",
+                    "type": "quantitative"
+                },
+                "latitude": {
+                    "field": "lat",
+                    "type": "quantitative"
+                },
+                "longitude2": {
+                    "field": "next_lng",
+                    "type": "quantitative"
+                },
+                "latitude2": {
+                    "field": "next_lat",
+                    "type": "quantitative"
+                },
+                "size": {
+                    "field": "transition_count",
+                    "type": "quantitative",
+                    "scale": {
+                        "range": [
+                            1,
+                            8
+                        ]
+                    },
+                    "legend": {
+                        "title": "Times Traveled"
+                    }
+                },
+                "color": {
+                    "field": "transition_count",
+                    "type": "quantitative",
+                    "scale": {
+                        "scheme": "oranges"
+                    }
+                },
+                "tooltip": [
+                    {
+                        "field": "circuit",
+                        "title": "From Track"
+                    },
+                    {
+                        "field": "next_circuit",
+                        "title": "To Track"
+                    },
+                    {
+                        "field": "transition_count",
+                        "title": "Total Transitions"
+                    }
+                ]
+            }
+        }
+    ]
+}

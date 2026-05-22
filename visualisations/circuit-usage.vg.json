@@ -1,0 +1,75 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Circuit Usage over Time",
+    "width": "container",
+    "height": "container",
+    "autosize": {
+        "type": "fit"
+    },
+    "data": {
+        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    "transform": [
+        {
+            "lookup": "circuitId",
+            "from": {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv"
+                },
+                "key": "circuitId",
+                "fields": [
+                    "name"
+                ]
+            },
+            "as": [
+                "circuitName"
+            ]
+        },
+        {
+            "filter": "datum.circuitId == 1"
+        },
+        {
+            "aggregate": [
+                {
+                    "op": "count",
+                    "field": "raceId",
+                    "as": "countRaces"
+                }
+            ],
+            "groupby": [
+                "year"
+            ]
+        },
+        {
+            "filter": "datum.circuitId == 1"
+        }
+    ],
+    "mark": {
+        "type": "bar"
+    },
+    "encoding": {
+        "y": {
+            "field": "countRaces",
+            "type": "quantitative",
+            "title": "Times Circuit was Used"
+        },
+        "x": {
+            "field": "year",
+            "type": "nominal",
+            "title": "year"
+        },
+        "tooltip": [
+            {
+                "field": "countRaces",
+                "title": "Circuit Count"
+            },
+            {
+                "field": "year",
+                "title": "Year"
+            }
+        ]
+    }
+}
