@@ -11,3 +11,10 @@
 }
 
 ;
+
+.vega-bindings {
+    display: block !important;
+    visibility: visible !important;
+    margin-top: 15px;
+    /* Give it space right below the map */
+}

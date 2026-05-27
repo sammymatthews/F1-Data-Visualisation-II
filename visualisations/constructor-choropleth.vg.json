@@ -7,6 +7,21 @@
         "type": "fit"
     },
     "background": "transparent",
+    "config": {
+        "title": {
+            "color": "white"
+        },
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
+        }
+    },
     "projection": {
         "type": "equalEarth"
     },
@@ -21,7 +36,7 @@
             },
             "mark": {
                 "type": "geoshape",
-                "fill": "white",
+                "fill": null,
                 "stroke": "lightgray"
             }
         },
@@ -49,7 +64,8 @@
                 }
             ],
             "mark": {
-                "type": "geoshape"
+                "type": "geoshape",
+                "stroke": "white"
             },
             "encoding": {
                 "color": {
@@ -58,6 +74,9 @@
                     "legend": {
                         "orient": "bottom-right",
                         "padding": 0
+                    },
+                    "scale": {
+                        "scheme": "reds"
                     }
                 },
                 "tooltip": [

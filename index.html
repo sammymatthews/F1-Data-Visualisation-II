@@ -87,16 +87,31 @@
                 click on a circuit to see more information on it below
             </p>
 
-
-            <div id="circuit_symbol_map" class="h-fit aspect-[10/6] m-4 bg-blue-100 rounded-md overflow-hidden">
+            <div id="circuit_symbol_map" class="grow h-fit mx-4 p-10bg-blue-100 rounded-md overflow-hidden">
             </div>
 
             <script type="text/javascript">
                 var spec = './visualisations/circuit-graph-1.vg.json';
                 vegaEmbed('#circuit_symbol_map', spec).then(function (result) {
+                    result.view.resize().run();
+
                     // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
                 }).catch(console.error);
             </script>
+
+            <div class="europe_map" class="hidden !important overflow-hidden">
+                <div id="europe_dot" class="h-fit aspect-[10/6] mx-4 bg-blue-100 rounded-md overflow-hidden">
+                </div>
+
+                <script type="text/javascript">
+                    var spec = './visualisations/europe_dotplot.vg.json';
+                    vegaEmbed('#europe_dot', spec, { actions: false }).then(function (result) {
+                        result.view.finalize();
+                        // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+                    }).catch(console.error);
+                </script>
+            </div>
+
         </div>
 
 
@@ -117,6 +132,7 @@
                 <script type="text/javascript">
                     var spec = './visualisations/circuit-usage.vg.json';
                     vegaEmbed('#circuit_usage', spec).then(function (result) {
+
                         // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
                     }).catch(console.error);
                 </script>
@@ -234,14 +250,16 @@
                     <div
                         class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
                         <!-- Card Title + text -->
-                        <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">Continent Representation in Drivers over Time</h3>
+                        <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">Continent Representation in Drivers over Time
+                        </h3>
 
                         <p class="mx-6">
-                            Throughout F1 history, it can be seen that Europeans make up a dominant proportion of the drivers on track. Other continent representation fluctuates drastically, such as a peak of African drivers in the 60s and of North American drivers in the 50s.
+                            Throughout F1 history, it can be seen that Europeans make up a dominant proportion of the
+                            drivers on track. Other continent representation fluctuates drastically, such as a peak of
+                            African drivers in the 60s and of North American drivers in the 50s.
                         </p>
 
-                        <div id="driver_continent_props"
-                            class="h-fit aspect-[10/6] m-4 rounded-md overflow-hidden">
+                        <div id="driver_continent_props" class="h-fit aspect-[10/6] m-4 rounded-md overflow-hidden">
                         </div>
 
                         <script type="text/javascript">
@@ -256,10 +274,17 @@
                 </div>
 
                 <div
-                    class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden mb-10 rounded-2xl bg-slate-800 shadow shadow-lg">
-                    <!-- right column -->
-                    <div id="driver_nationality_bar"
-                        class="grow m-1.5 bg-white rounded-xl overflow-hidden aspect-[21/18]"></div>
+                    class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
+                    <!-- Card Title + text -->
+                    <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">Dominant Driver Nationalities</h3>
+
+                    <p class="mx-6">
+                        With a total of 166 drivers participating in the sport, Britain is the most dominant nation in
+                        F1, closely followed by the United States. The European dominance is seen with Italian, French,
+                        and German drivers, however, South American nationalities and even South African drivers also
+                        make up a large proportion of all drivers.
+                    </p>
+                    <div id="driver_nationality_bar" class="h-fit aspect-[10/8] m-4 rounded-md overflow-hidden"></div>
 
                     <script type="text/javascript">
                         var spec = './visualisations/driver-nationalities-bar.vg.json';
@@ -283,7 +308,7 @@
                 Choose which driver you want to look at in more detail by selecting from the graph below (have not
                 implemented yet).
             </p>
-            <div id="top-drivers" class="grow aspect-[2/1] bg-white rounded-xl overflow-hidden"></div>
+            <div id="top-drivers" class="grow aspect-[2/1] rounded-xl overflow-hidden"></div>
 
             <script type="text/javascript">
                 var spec = './visualisations/top-driver-wins-bar.vg.json';
@@ -367,44 +392,105 @@
                     expertise, industrial infrastructure, and long-standing motorsport culture in Formula One history.
 
                 </p>
-                <div class="flex flex-col min-w-0 min-h-0 h-fit overflow-hidden rounded-2xl bg-slate-700 shadow">
-                    <!-- right column -->
-                    <div id="constructor_choropleth"
-                        class="h-fit aspect-[10/6] m-1.5 bg-blue-100 rounded-xl overflow-hidden">
-                    </div>
 
-                    <script type="text/javascript">
-                        var spec = './visualisations/constructor-choropleth.vg.json';
-                        vegaEmbed('#constructor_choropleth', spec).then(function (result) {
-                            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-                        }).catch(console.error);
-                    </script>
-
-                    <p class="m-6 mt-4">
-                        Hover over the map to see the number of contructors that originate in each country.
-                    </p>
-                </div>
             </div>
-            <div class="flex flex-col h-full min-w-0 min-h-0 overflow-hidden rounded-2xl bg-slate-700">
-                <div class="flex grow h-full bg-white rounded-xl overflow-hidden p-3 m-1.5">
-                    <div id="constructor_wins" class="w-full aspect-[1/1] bg-white overflow-hidden">
-                    </div>
+            <div
+                class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
+                <!-- Card Title + text -->
+                <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One"> Constructors with Greatest Grand Prix Success </h3>
+
+                <p class="mx-6">
+                    As the oldest constructor, competing in every F1 season since 1950, it's no surprise that
+                    <strong>Ferrari</strong> holds the highest number Grand Prix wins.
+                </p>
+                <!-- <div id="constructor_wins" class="h-fit aspect-[10/8] m-4 rounded-md overflow-hidden"></div>
 
                     <script type="text/javascript">
                         var spec = './visualisations/top-constructor-wins-bar.vg.json';
                         vegaEmbed('#constructor_wins', spec).then(function (result) {
                             // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
                         }).catch(console.error);
-                    </script>
+                    </script> -->
+            </div>
 
+        </div>
+
+        <div
+            class="flex flex-col min-w-0 min-h-0 h-fit overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500 mb-10">
+            <!-- Card Title + text -->
+            <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">Origins of F1 Constructors</h3>
+
+            <p class="mx-6">
+                The European origins of the sport are evident in the geographical cluster of circuits throughout central
+                Europe. Despite this, globalisation of F1 has led to circuits across all continents being used, many of
+                which are still a part of the F1 calendar.
+            </p>
+
+            <p class="m-6 mb-0 text-sm self-end font-bold">
+                click on a circuit to see more information on it below
+            </p>
+
+
+            <div id="constructor_choropleth" class="h-fit aspect-[10/6] m-4 rounded-md overflow-hidden">
+            </div>
+
+            <script type="text/javascript">
+                var spec = './visualisations/constructor-choropleth.vg.json';
+                vegaEmbed('#constructor_choropleth', spec).then(function (result) {
+                    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+                }).catch(console.error);
+            </script>
+        </div>
+
+        <div class="grid grid-cols-2 gap-10 mb-10">
+            <div class="h-fit">
+
+
+
+                <div
+                    class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
+                    <!-- Card Title + text -->
+                    <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One"> Top Constructors Accumulated Success
+                    </h3>
+
+                    <p class="mx-6">
+                        Throughout F1 history, it can be seen that Europeans make up a dominant proportion of the
+                        drivers on track. Other continent representation fluctuates drastically, such as a peak of
+                        African drivers in the 60s and of North American drivers in the 50s.
+                    </p>
+
+                    <div id="constructor_wins_step" class="h-fit aspect-[10/6] m-4 rounded-md overflow-hidden">
+                    </div>
+
+                    <script type="text/javascript">
+                        var spec = './visualisations/constructor_wins_timescale.vg.json';
+                        vegaEmbed('#constructor_wins_step', spec).then(function (result) {
+                            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+                        }).catch(console.error);
+                    </script>
                 </div>
 
-                <p class="m-6 mt-4 h-fit">
+
+            </div>
+
+            <div
+                class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
+                <!-- Card Title + text -->
+                <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One"> Constructors with Greatest Grand Prix Success </h3>
+
+                <p class="mx-6">
                     As the oldest constructor, competing in every F1 season since 1950, it's no surprise that
                     <strong>Ferrari</strong> holds the highest number Grand Prix wins.
                 </p>
-            </div>
+                <div id="constructor_wins" class="h-fit aspect-[10/6] m-4 rounded-md overflow-hidden"></div>
 
+                <script type="text/javascript">
+                    var spec = './visualisations/top-constructor-wins-bar.vg.json';
+                    vegaEmbed('#constructor_wins', spec).then(function (result) {
+                        // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+                    }).catch(console.error);
+                </script>
+            </div>
         </div>
 
     </div>

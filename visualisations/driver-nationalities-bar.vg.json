@@ -1,20 +1,36 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "Driver Nationalities",
+    "title": {
+        "text": "Total Drivers per Nationality",
+        "color": "white"
+    },
     "width": "container",
     "height": "container",
     "autosize": {
         "type": "fit"
     },
+    "background": "transparent",
+    "config": {
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
+        }
+    },
     "data": {
-        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/drivers_cleaned.csv",
+        "url": "./f1-data/drivers_cleaned.csv",
         "format": {
             "type": "csv"
         }
     },
     "transform": [
         {
-            "aggregate": [
+            "joinaggregate": [
                 {
                     "op": "count",
                     "field": "driverId",
@@ -24,6 +40,23 @@
             "groupby": [
                 "nationality"
             ]
+        },
+        {
+            "window": [
+                {
+                    "op": "dense_rank",
+                    "as": "nationalityRank"
+                }
+            ],
+            "sort": [
+                {
+                    "field": "totalDrivers",
+                    "order": "descending"
+                }
+            ]
+        },
+        {
+            "filter": "datum.nationalityRank <= 10"
         }
     ],
     "mark": {
@@ -42,6 +75,7 @@
         },
         "x": {
             "field": "totalDrivers",
+            "aggregate": "max",
             "type": "quantitative",
             "title": "Driver Count"
         },
@@ -54,6 +88,9 @@
                 "field": "nationality",
                 "title": "Nationality"
             }
-        ]
+        ],
+        "color": {
+            "field": "Continent"
+        }
     }
 }

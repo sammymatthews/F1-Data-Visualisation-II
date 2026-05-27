@@ -1,0 +1,275 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "height": "container",
+    "autosize": {
+        "type": "fit"
+    },
+    "background": "transparent",
+    "data": {
+        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/constructor_standings.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    "transform": [
+        {
+            
+            "comment": "Step 1: Aggregate your wins column instead of just counting rows",
+            "aggregate": [
+                {
+                    "op": "sum",
+                    "field": "championship_wins",
+                    "as": "championship_wins"
+                }
+            ],
+            "groupby": [
+                "continent",
+                "country"
+            ]
+        },
+        {
+            "stack": "championship_wins",
+            "groupby": [],
+            "as": [
+                "stack_count_Origin1",
+                "stack_count_Origin2"
+            ],
+            "offset": "normalize",
+            "sort": [
+                {
+                    "field": "continent",
+                    "order": "ascending"
+                }
+            ]
+        },
+        {
+            "window": [
+                {
+                    "op": "min",
+                    "field": "stack_count_Origin1",
+                    "as": "x"
+                },
+                {
+                    "op": "max",
+                    "field": "stack_count_Origin2",
+                    "as": "x2"
+                },
+                {
+                    "op": "dense_rank",
+                    "as": "rank_Cylinders"
+                },
+                {
+                    "op": "distinct",
+                    "field": "country",
+                    "as": "distinct_Cylinders"
+                }
+            ],
+            "groupby": [
+                "continent"
+            ],
+            "frame": [
+                null,
+                null
+            ],
+            "sort": [
+                {
+                    "field": "country",
+                    "order": "ascending"
+                }
+            ]
+        },
+        {
+            "window": [
+                {
+                    "op": "dense_rank",
+                    "as": "rank_Origin"
+                }
+            ],
+            "frame": [
+                null,
+                null
+            ],
+            "sort": [
+                {
+                    "field": "continent",
+                    "order": "ascending"
+                }
+            ]
+        },
+        {
+            "stack": "championship_wins",
+            "groupby": [
+                "continent"
+            ],
+            "as": [
+                "y",
+                "y2"
+            ],
+            "offset": "normalize",
+            "sort": [
+                {
+                    "field": "country",
+                    "order": "ascending"
+                }
+            ]
+        },
+        {
+            "calculate": "datum.y + (datum.rank_Cylinders - 1) * datum.distinct_Cylinders * 0.01 / 3",
+            "as": "ny"
+        },
+        {
+            "calculate": "datum.y2 + (datum.rank_Cylinders - 1) * datum.distinct_Cylinders * 0.01 / 3",
+            "as": "ny2"
+        },
+        {
+            "calculate": "datum.x + (datum.rank_Origin - 1) * 0.01",
+            "as": "nx"
+        },
+        {
+            "calculate": "datum.x2 + (datum.rank_Origin - 1) * 0.01",
+            "as": "nx2"
+        },
+        {
+            "calculate": "(datum.nx+datum.nx2)/2",
+            "as": "xc"
+        },
+        {
+            "calculate": "(datum.ny+datum.ny2)/2",
+            "as": "yc"
+        }
+    ],
+    "vconcat": [
+        {
+            "mark": {
+                "type": "text",
+                "baseline": "middle",
+                "align": "center",
+                "fontWeight": "bold"
+            },
+            "encoding": {
+                "x": {
+                    "aggregate": "min",
+                    "field": "xc",
+                    "title": "Continent Origin",
+                    "axis": {
+                        "orient": "top"
+                    }
+                },
+                "color": {
+                    "field": "continent",
+                    "legend": null
+                },
+                "text": {
+                    "field": "continent"
+                }
+            }
+        },
+        {
+            "layer": [
+                {
+                    "mark": {
+                        "type": "rect",
+                        "stroke": "white",
+                        "strokeWidth": 1
+                    },
+                    "encoding": {
+                        "x": {
+                            "field": "nx",
+                            "type": "quantitative",
+                            "axis": null
+                        },
+                        "x2": {
+                            "field": "nx2"
+                        },
+                        "y": {
+                            "field": "ny",
+                            "type": "quantitative"
+                        },
+                        "y2": {
+                            "field": "ny2"
+                        },
+                        "color": {
+                            "field": "continent",
+                            "type": "nominal",
+                            "legend": null
+                        },
+                        "opacity": {
+                            "field": "championship_wins",
+                            "type": "quantitative",
+                            "scale": {
+                                "range": [
+                                    0.4,
+                                    1
+                                ]
+                            },
+                            "legend": null
+                        },
+                        "tooltip": [
+                            {
+                                "field": "continent",
+                                "type": "nominal",
+                                "title": "Continent"
+                            },
+                            {
+                                "field": "country",
+                                "type": "nominal",
+                                "title": "Country"
+                            },
+                            {
+                                "field": "championship_wins",
+                                "type": "quantitative",
+                                "title": "Total Wins"
+                            }
+                        ]
+                    }
+                },
+                {
+                    "mark": {
+                        "type": "text",
+                        "baseline": "middle",
+                        "fontSize": 11,
+                        "fill": "white"
+                    },
+                    "encoding": {
+                        "x": {
+                            "field": "xc",
+                            "type": "quantitative",
+                            "axis": null
+                        },
+                        "y": {
+                            "field": "yc",
+                            "type": "quantitative",
+                            "axis": {
+                                "title": "Championship Wins Composition"
+                            }
+                        },
+                        "text": {
+                            "field": "country",
+                            "type": "nominal"
+                        }
+                    }
+                }
+            ]
+        }
+    ],
+    "resolve": {
+        "scale": {
+            "x": "shared"
+        }
+    },
+    "config": {
+        "view": {
+            "stroke": ""
+        },
+        "concat": {
+            "spacing": 10
+        },
+        "axis": {
+            "domain": false,
+            "ticks": false,
+            "labels": false,
+            "grid": false
+        }
+    }
+}
