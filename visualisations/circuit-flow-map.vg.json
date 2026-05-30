@@ -1,6 +1,5 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "F1 Circuits around the globe",
     "width": "container",
     "height": "container",
     "autosize": {
@@ -11,6 +10,39 @@
     "projection": {
         "type": "equalEarth"
     },
+    "config": {
+        "title": {
+            "color": "white"
+        },
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
+        }
+    },
+    "params": [
+        {
+            "name": "toggle_incoming",
+            "value": true,
+            "bind": {
+                "input": "checkbox",
+                "name": "Show Incoming Flows: "
+            }
+        },
+        {
+            "name": "toggle_outgoing",
+            "value": true,
+            "bind": {
+                "input": "checkbox",
+                "name": "Show Outgoing Flows: "
+            }
+        }
+    ],
     "layer": [
         {
             "data": {
@@ -22,8 +54,45 @@
             },
             "mark": {
                 "type": "geoshape",
-                "fill": "white",
-                "stroke": "lightgray"
+                "fill": "#50657f46",
+                "stroke": "white",
+                "strokeOpacity": 0.6
+            }
+        },
+        {
+            "data": {
+                "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv",
+                "format": {
+                    "type": "csv"
+                }
+            },
+            "params": [
+                {
+                    "name": "highlight",
+                    "select": {
+                        "type": "point",
+                        "on": "pointerover",
+                        "nearest": true,
+                        "fields": [
+                            "circuitId"
+                        ]
+                    }
+                }
+            ],
+            "mark": {
+                "type": "circle",
+                "color": "lightskyblue",
+                "size": 40
+            },
+            "encoding": {
+                "longitude": {
+                    "field": "lng",
+                    "type": "quantitative"
+                },
+                "latitude": {
+                    "field": "lat",
+                    "type": "quantitative"
+                }
             }
         },
         {
@@ -33,22 +102,51 @@
                     "type": "csv"
                 }
             },
+            "transform": [
+                {
+                    "filter": "highlight.circuitId == datum.circuitId"
+                },
+                {
+                    "lookup": "circuitId",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv",
+                            "format": {
+                                "type": "csv"
+                            }
+                        },
+                        "key": "circuitId",
+                        "fields": [
+                            "name"
+                        ]
+                    },
+                    "as": "originCircuit"
+                },
+                {
+                    "lookup": "next_circuit",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv",
+                            "format": {
+                                "type": "csv"
+                            }
+                        },
+                        "key": "circuitId",
+                        "fields": [
+                            "name"
+                        ]
+                    },
+                    "as": "destinationCircuit"
+                },
+                {
+                    "calculate": "toggle_outgoing ? 0.8 : 0",
+                    "as": "opacity"
+                }
+            ],
             "mark": {
                 "type": "rule",
                 "strokeCap": "round",
-                "stroke": {
-                    "gradient": "linear",
-                    "stops": [
-                        {
-                            "offset": 0,
-                            "color": "#ff4d4dc0"
-                        },
-                        {
-                            "offset": 1,
-                            "color": "rgba(255, 255, 255, 0.3)"
-                        }
-                    ]
-                }
+                "color": "#e16059"
             },
             "encoding": {
                 "longitude": {
@@ -71,34 +169,154 @@
                     "field": "transition_count",
                     "type": "quantitative",
                     "scale": {
+                        "type": "threshold",
+                        "domain": [
+                            2,
+                            5,
+                            10
+                        ],
                         "range": [
-                            1,
-                            8
+                            0.8,
+                            2,
+                            4
                         ]
                     },
                     "legend": {
                         "title": "Times Traveled"
                     }
                 },
-                "color": {
-                    "field": "transition_count",
+                "strokeOpacity": {
+                    "field": "opacity",
                     "type": "quantitative",
-                    "scale": {
-                        "scheme": "oranges"
-                    }
+                    "scale": null
                 },
                 "tooltip": [
                     {
-                        "field": "circuit",
-                        "title": "From Track"
+                        "field": "originCircuit",
+                        "title": "From "
                     },
                     {
-                        "field": "next_circuit",
-                        "title": "To Track"
+                        "field": "destinationCircuit",
+                        "title": "To "
                     },
                     {
                         "field": "transition_count",
-                        "title": "Total Transitions"
+                        "title": "Total flow"
+                    }
+                ]
+            }
+        },
+        {
+            "data": {
+                "url": "../f1-data/circuit_flows.csv",
+                "format": {
+                    "type": "csv"
+                }
+            },
+            "transform": [
+                {
+                    "filter": "highlight.circuitId == datum.next_circuit"
+                },
+                {
+                    "lookup": "circuitId",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv",
+                            "format": {
+                                "type": "csv"
+                            }
+                        },
+                        "key": "circuitId",
+                        "fields": [
+                            "name"
+                        ]
+                    },
+                    "as": "originCircuit"
+                },
+                {
+                    "lookup": "next_circuit",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv",
+                            "format": {
+                                "type": "csv"
+                            }
+                        },
+                        "key": "circuitId",
+                        "fields": [
+                            "name"
+                        ]
+                    },
+                    "as": "destinationCircuit"
+                },
+                {
+                    "calculate": "toggle_incoming ? 0.8 : 0",
+                    "as": "opacity"
+                }
+            ],
+            "mark": {
+                "type": "rule",
+                "strokeCap": "round",
+                "color": "#fed55b",
+                "strokeDash": [
+                    8,
+                    4
+                ]
+            },
+            "encoding": {
+                "longitude": {
+                    "field": "lng",
+                    "type": "quantitative"
+                },
+                "latitude": {
+                    "field": "lat",
+                    "type": "quantitative"
+                },
+                "longitude2": {
+                    "field": "next_lng",
+                    "type": "quantitative"
+                },
+                "latitude2": {
+                    "field": "next_lat",
+                    "type": "quantitative"
+                },
+                "size": {
+                    "field": "transition_count",
+                    "type": "quantitative",
+                    "scale": {
+                        "type": "threshold",
+                        "domain": [
+                            2,
+                            5,
+                            10
+                        ],
+                        "range": [
+                            0.8,
+                            2,
+                            4
+                        ]
+                    },
+                    "legend": {
+                        "title": "Times Traveled"
+                    }
+                },
+                "strokeOpacity": {
+                    "field": "opacity",
+                    "type": "quantitative",
+                    "scale": null
+                },
+                "tooltip": [
+                    {
+                        "field": "originCircuit",
+                        "title": "From "
+                    },
+                    {
+                        "field": "destinationCircuit",
+                        "title": "To "
+                    },
+                    {
+                        "field": "transition_count",
+                        "title": "Total flow"
                     }
                 ]
             }

@@ -39,12 +39,14 @@
                 "key": "driverId",
                 "fields": [
                     "forename",
-                    "surname"
+                    "surname",
+                    "nationality"
                 ]
             },
             "as": [
                 "driverForename",
-                "driverSurname"
+                "driverSurname",
+                "nationality"
             ]
         },
         {
@@ -63,7 +65,9 @@
                 }
             ],
             "groupby": [
-                "driverName"
+                "driverName",
+                "driverId",
+                "nationality"
             ]
         },
         {
@@ -85,34 +89,187 @@
             "filter": "datum.driverRank <= 10"
         }
     ],
-    "mark": {
-        "type": "bar"
-    },
-    "encoding": {
-        "y": {
-            "field": "driverName",
-            "type": "nominal",
-            "sort": {
-                "field": "totalWins",
-                "op": "sum",
-                "order": "descending"
+    "vconcat": [
+        {
+            "width": 700,
+            "height": 200,
+            "params": [
+                {
+                    "name": "highlight",
+                    "select": {
+                        "type": "point",
+                        "on": "pointerover"
+                    }
+                },
+                {
+                    "name": "select",
+                    "select": {
+                        "type": "point",
+                        "fields": [
+                            "driverId"
+                        ]
+                    }
+                }
+            ],
+            "mark": {
+                "type": "bar",
+                "stroke": "black"
             },
-            "title": "Driver Name"
-        },
-        "x": {
-            "field": "totalWins",
-            "type": "quantitative",
-            "title": "Total Grand Prix wins"
-        },
-        "tooltip": [
-            {
-                "field": "totalWins",
-                "title": "Total Grand Prix wins"
-            },
-            {
-                "field": "driverRank",
-                "title": "Rank"
+            "encoding": {
+                "y": {
+                    "field": "driverName",
+                    "type": "nominal",
+                    "sort": {
+                        "field": "totalWins",
+                        "op": "sum",
+                        "order": "descending"
+                    },
+                    "title": "Driver Name"
+                },
+                "x": {
+                    "field": "totalWins",
+                    "type": "quantitative",
+                    "title": "Total Grand Prix wins"
+                },
+                "color": {
+                    "field": "nationality",
+                    "type": "nominal",
+                    "legend": {
+                        "orient": "right"
+                    }
+                },
+                "fillOpacity": {
+                    "condition": {
+                        "param": "select",
+                        "value": 1
+                    },
+                    "value": 0.3
+                },
+                "strokeWidth": {
+                    "condition": [
+                        {
+                            "param": "select",
+                            "empty": false,
+                            "value": 2
+                        },
+                        {
+                            "param": "highlight",
+                            "empty": false,
+                            "value": 1
+                        }
+                    ],
+                    "value": 0
+                },
+                "tooltip": [
+                    {
+                        "field": "totalWins",
+                        "title": "Total Grand Prix wins"
+                    },
+                    {
+                        "field": "driverRank",
+                        "title": "Rank"
+                    }
+                ]
             }
-        ]
-    }
+        },
+        {
+            "title": "Driver wins over time",
+            "height": 200,
+            "width": 700,
+            "data": {
+                "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/driver_standings.csv",
+                "format": {
+                    "type": "csv"
+                }
+            },
+            "transform": [
+                {
+                    "calculate": "toNumber(datum.driverId)",
+                    "as": "driverId"
+                },
+                {
+                    "lookup": "driverId",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/drivers.csv"
+                        },
+                        "key": "driverId",
+                        "fields": [
+                            "forename",
+                            "surname"
+                        ]
+                    },
+                    "as": [
+                        "driverForename",
+                        "driverSurname"
+                    ]
+                },
+                {
+                    "calculate": "datum.driverForename + ' ' + datum.driverSurname",
+                    "as": "driverName"
+                },
+                {
+                    "filter": "select.driverId == datum.driverId"
+                },
+                {
+                    "lookup": "raceId",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv"
+                        },
+                        "key": "raceId",
+                        "fields": [
+                            "year",
+                            "round"
+                        ]
+                    }
+                },
+                {
+                    "calculate": "toNumber(datum.round)",
+                    "as": "round"
+                },
+                {
+                    "aggregate": [
+                        {
+                            "op": "max",
+                            "field": "wins",
+                            "as": "roundWins"
+                        }
+                    ],
+                    "groupby": [
+                        "year",
+                        "driverName"
+                    ]
+                }
+            ],
+            "mark": {
+                "type": "bar",
+                "color": "goldenrod"
+            },
+            "encoding": {
+                "y": {
+                    "field": "roundWins",
+                    "type": "quantitative",
+                    "title": "Grand Prix wins"
+                },
+                "x": {
+                    "field": "year",
+                    "type": "nominal",
+                    "title": "Season",
+                    "axis": {
+                        "labelAngle": 0
+                    }
+                },
+                "tooltip": [
+                    {
+                        "field": "roundWins",
+                        "title": "Total Grand Prix wins"
+                    },
+                    {
+                        "field": "year"
+                    }
+                ]
+            }
+        }
+    ]
 }

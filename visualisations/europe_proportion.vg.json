@@ -1,0 +1,153 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "height": "container",
+    "autosize": {
+        "type": "fit"
+    },
+    "background": "transparent",
+    "config": {
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
+        }
+    },
+    "data": {
+        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/constructors_cleaned.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    "transform": [
+        {
+            "lookup": "country",
+            "from": {
+                "data": {
+                    "url": "../f1-data/countries_to_continents.csv"
+                },
+                "key": "Country",
+                "fields": [
+                    "Continent"
+                ]
+            }
+        },
+        {
+            "calculate": "datum.Continent == 'Europe' ? 'Europe' : 'Other'",
+            "as": "RegionGroup"
+        },
+        {
+            "aggregate": [
+                {
+                    "op": "count",
+                    "as": "totalConstructors"
+                }
+            ],
+            "groupby": [
+                "RegionGroup"
+            ]
+        },
+        {
+            "joinaggregate": [
+                {
+                    "op": "sum",
+                    "field": "totalConstructors",
+                    "as": "grandTotal"
+                }
+            ]
+        },
+        {
+            "calculate": "format(datum.totalConstructors / datum.grandTotal, '.1%')",
+            "as": "percentageString"
+        }
+    ],
+    "layer": [
+        {
+            "mark": {
+                "type": "arc",
+                "innerRadius": 90,
+                "outerRadius": 160,
+                "tooltip": true
+            },
+            "encoding": {
+                "theta": {
+                    "field": "totalConstructors",
+                    "type": "quantitative"
+                },
+                "color": {
+                    "field": "RegionGroup",
+                    "type": "nominal",
+                    "title": "Region",
+                    "scale": {
+                        "domain": [
+                            "Europe",
+                            "Other"
+                        ],
+                        "range": [
+                            "pink",
+                            "darkgray"
+                        ]
+                    }
+                },
+                "tooltip": [
+                    {
+                        "field": "RegionGroup",
+                        "type": "nominal",
+                        "title": "Region"
+                    },
+                    {
+                        "field": "totalConstructors",
+                        "type": "quantitative",
+                        "title": "Total Constructors"
+                    }
+                ]
+            }
+        },
+        {
+            "transform": [
+                {
+                    "filter": "datum.RegionGroup == 'Europe'"
+                }
+            ],
+            "mark": {
+                "type": "text",
+                "color": "white",
+                "fontSize": 28,
+                "fontWeight": "bold",
+                "align": "center",
+                "baseline": "middle"
+            },
+            "encoding": {
+                "text": {
+                    "field": "percentageString",
+                    "type": "nominal"
+                }
+            }
+        },
+        {
+            "transform": [
+                {
+                    "filter": "datum.RegionGroup == 'Europe'"
+                }
+            ],
+            "mark": {
+                "type": "text",
+                "color": "#bdbcbc",
+                "fontSize": 14,
+                "align": "center",
+                "baseline": "middle",
+                "dy": 30
+            },
+            "encoding": {
+                "text": {
+                    "value": "European Teams"
+                }
+            }
+        }
+    ]
+}

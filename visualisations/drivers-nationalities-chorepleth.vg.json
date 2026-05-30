@@ -3,8 +3,25 @@
     "title": "F1 Driver Nationalities",
     "width": "container",
     "height": "container",
-    "autosize": {"type": "fit"},
+    "autosize": {
+        "type": "fit"
+    },
     "background": "transparent",
+    "config": {
+        "title": {
+            "color": "white"
+        },
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
+        }
+    },
     "projection": {
         "type": "equalEarth"
     },
@@ -19,8 +36,9 @@
             },
             "mark": {
                 "type": "geoshape",
-                "fill": "white", 
-                "stroke": "lightgray"
+                "fill": "#50657f46",
+                "stroke": "white",
+                "strokeOpacity": 0.6
             }
         },
         {

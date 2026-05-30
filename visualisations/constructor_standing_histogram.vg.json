@@ -1,0 +1,186 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "height": "container",
+    "autosize": {
+        "type": "fit",
+        "contains": "padding"
+    },
+    "background": "transparent",
+    "config": {
+        "title": {
+            "color": "white"
+        },
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
+        }
+    },
+    "data": {
+        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/constructor_standings.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    "params": [
+        {
+            "name": "search_input",
+            "bind": {
+                "input": "search",
+                "placeholder": "e.g., Ferrari, Mercedes",
+                "name": "Search for a constructor:  "
+            },
+            "value": "Ferrari"
+        }
+    ],
+    "transform": [
+        {
+            "lookup": "constructorId",
+            "from": {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/constructors_cleaned.csv"
+                },
+                "key": "constructorId",
+                "fields": [
+                    "name"
+                ]
+            }
+        },
+        {
+            "lookup": "raceId",
+            "from": {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv"
+                },
+                "key": "raceId",
+                "fields": [
+                    "year",
+                    "round"
+                ]
+            }
+        },
+        {
+            "filter": "test(regexp(search_input, 'i'), datum.name)"
+        },
+        {
+            "joinaggregate": [
+                {
+                    "op": "max",
+                    "field": "round",
+                    "as": "finalRound"
+                }
+            ],
+            "groupby": [
+                "year"
+            ]
+        },
+        {
+            "filter": "datum.round == datum.finalRound"
+        }
+    ],
+    "layer": [
+        {
+            "mark": {
+                "type": "bar",
+                "color": "darkolivegreen"
+            },
+            "encoding": {
+                "x": {
+                    "field": "position",
+                    "bin": {
+                        "step": 1,
+                        "extent": [
+                            1,
+                            20
+                        ]
+                    },
+                    "scale": {
+                        "domain": [
+                            1,
+                            21
+                        ],
+                        "zero": false
+                    },
+                    "title": "Final Position",
+                    "type": "quantitative",
+                    "axis": {
+                        "title": "Final Championship Position",
+                        "tickMinStep": 1,
+                        "tickOffset": 18,
+                        "labelExpr": "datum.value",
+                        "labelFlush": false,
+                        "labelAlign": "center",
+                        "labelPadding": 10,
+                        "values": [
+                            1,
+                            2,
+                            3,
+                            4,
+                            5,
+                            6,
+                            7,
+                            8,
+                            9,
+                            10,
+                            11,
+                            12,
+                            13,
+                            14,
+                            15,
+                            16,
+                            17,
+                            18,
+                            19,
+                            20
+                        ]
+                    }
+                },
+                "y": {
+                    "aggregate": "count",
+                    "title": "Final Position Count",
+                    "type": "quantitative"
+                },
+                "tooltip": [
+                    {
+                        "field": "name",
+                        "title": "Constructor Name"
+                    },
+                    {
+                        "field": "position",
+                        "title": "Final Position",
+                        "bin": {
+                            "binned": true,
+                            "minstep": 1
+                        }
+                    },
+                    {
+                        "field": "position",
+                        "aggregate": "count",
+                        "title": "Position Count"
+                    }
+                ]
+            }
+        },
+        {
+            "mark": "rule",
+            "encoding": {
+                "x": {
+                    "aggregate": "mean",
+                    "field": "position"
+                },
+                "color": {
+                    "value": "hotpink"
+                },
+                "size": {
+                    "value": 3
+                }
+            }
+        }
+    ]
+}

@@ -1,11 +1,11 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "F1 Circuits",
     "background": "transparent",
-    "width": "container",
+    "width": 1100,
+    "padding": 20,
     "autosize": {
         "contains": "padding",
-        "spacing": 10,
+        "spacing": 20,
         "resize": true
     },
     "config": {
@@ -23,12 +23,41 @@
             "labelColor": "white"
         }
     },
+    "params": [
+        {
+            "name": "region_selection",
+            "value": "World",
+            "bind": {
+                "input": "select",
+                "options": [
+                    "World",
+                    "Europe"
+                ],
+                "labels": [
+                    "World View",
+                    "Europe View"
+                ],
+                "name": "Map Zoom: "
+            }
+        }
+    ],
     "vconcat": [
         {
-            "width": "container",
+            "width": 1100,
             "height": 500,
             "projection": {
-                "type": "equalEarth"
+                "type": {
+                    "expr": "region_selection == 'Europe' ? 'azimuthalEqualArea' : 'equalEarth'"
+                },
+                "center": {
+                    "expr": "region_selection == 'Europe' ? [-60, 65] : [-280, 100]"
+                },
+                "rotate": {
+                    "expr": "region_selection == 'Europe' ? [0, 0, 0] : [-15, -15, 0]"
+                },
+                "scale": {
+                    "expr": "region_selection == 'Europe' ? 700 : 200"
+                }
             },
             "layer": [
                 {
@@ -41,8 +70,9 @@
                     },
                     "mark": {
                         "type": "geoshape",
-                        "fill": "#1c2d42",
-                        "stroke": "white"
+                        "fill": "#50657f46",
+                        "stroke": "white",
+                        "strokeOpacity": 0.6
                     }
                 },
                 {
@@ -109,8 +139,8 @@
                     ],
                     "mark": {
                         "type": "circle",
-                        "fill": "deeppink",
-                        "stroke": "deeppink"
+                        "fill": "#ff81ad",
+                        "stroke": "#ff659b"
                     },
                     "encoding": {
                         "longitude": {
@@ -122,14 +152,38 @@
                             "type": "quantitative"
                         },
                         "fillOpacity": {
-                            "condition": {
-                                "param": "select",
-                                "value": 0.6
-                            },
-                            "value": 0.30
+                            "condition": [
+                                {
+                                    "param": "select",
+                                    "empty": false,
+                                    "value": 1
+                                },
+                                {
+                                    "param": "highlight",
+                                    "empty": false,
+                                    "value": 1
+                                }
+                            ],
+                            "value": 0.5
                         },
                         "size": {
-                            "field": "races_per_circuit"
+                            "field": "races_per_circuit",
+                            "type": "quantitative",
+                            "title": "Total Races Held",
+                            "scale": {
+                                "range": [
+                                    20,
+                                    400
+                                ]
+                            },
+                            "legend": {
+                                "orient": "top",
+                                "direction": "horizontal",
+                                "titleColor": "white",
+                                "labelColor": "white",
+                                "gradientLength": 200,
+                                "padding": 15
+                            }
                         },
                         "strokeWidth": {
                             "condition": [
@@ -144,7 +198,7 @@
                                     "value": 1
                                 }
                             ],
-                            "value": 0
+                            "value": 0.3
                         },
                         "tooltip": [
                             {
@@ -168,188 +222,186 @@
             ]
         },
         {
-            "hconcat": [
+            "data": {
+                "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv",
+                "format": {
+                    "type": "csv"
+                }
+            },
+            "transform": [
                 {
-                    "title": "Championship Seasons Active Timeline",
-                    "width": 500,
-                    "height": 130,
-                    "data": {
-                        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv",
-                        "format": {
-                            "type": "csv"
-                        }
-                    },
-                    "transform": [
-                        {
-                            "filter": "select.circuitId == datum.circuitId"
+                    "lookup": "circuitId",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv"
                         },
-                        {
-                            "lookup": "circuitId",
-                            "from": {
-                                "data": {
-                                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv"
-                                },
-                                "key": "circuitId",
-                                "fields": [
-                                    "name",
-                                    "location",
-                                    "country"
-                                ]
-                            }
-                        },
-                        {
-                            "aggregate": [
-                                {
-                                    "op": "count",
-                                    "as": "RacesInSeason"
-                                }
-                            ],
-                            "groupby": [
-                                "year",
-                                "name",
-                                "location",
-                                "country"
-                            ]
-                        }
-                    ],
-                    "mark": {
-                        "type": "bar",
-                        "color": "deeppink",
-                        "cornerRadiusTopLeft": 3,
-                        "cornerRadiusTopRight": 3
-                    },
-                    "encoding": {
-                        "x": {
-                            "field": "year",
-                            "type": "quantitative",
-                            "title": "F1 Season (Year)",
-                            "scale": {
-                                "domain": [
-                                    1950,
-                                    2024
-                                ]
-                            },
-                            "axis": {
-                                "labelAngle": -45
-                            }
-                        },
-                        "y": {
-                            "field": "RacesInSeason",
-                            "type": "quantitative",
-                            "title": "Grands Prix Hosted",
-                            "axis": {
-                                "tickMinStep": 1
-                            }
-                        },
-                        "tooltip": [
-                            {
-                                "field": "name",
-                                "type": "nominal",
-                                "title": "Circuit"
-                            },
-                            {
-                                "field": "year",
-                                "type": "nominal",
-                                "title": "Season"
-                            },
-                            {
-                                "field": "RacesInSeason",
-                                "type": "quantitative",
-                                "title": "Races Held This Year"
-                            }
+                        "key": "circuitId",
+                        "fields": [
+                            "name",
+                            "location",
+                            "country"
                         ]
                     }
                 },
                 {
-                    "height": 130,
-                    "data": {
-                        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv",
-                        "format": {
-                            "type": "csv"
+                    "joinaggregate": [
+                        {
+                            "op": "distinct",
+                            "field": "year",
+                            "as": "total_seasons"
                         }
-                    },
-                    "transform": [
+                    ]
+                },
+                {
+                    "filter": "select.circuitId == datum.circuitId"
+                },
+                {
+                    "joinaggregate": [
                         {
-                            "lookup": "circuitId",
-                            "from": {
-                                "data": {
-                                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv"
-                                },
-                                "key": "circuitId",
-                                "fields": [
-                                    "name",
-                                    "location",
-                                    "country"
-                                ]
-                            }
-                        },
+                            "op": "min",
+                            "field": "year",
+                            "as": "first_year"
+                        }
+                    ]
+                },
+                {
+                    "joinaggregate": [
                         {
-                            "joinaggregate": [
-                                {
-                                    "op": "distinct",
-                                    "field": "year",
-                                    "as": "total_seasons"
-                                }
-                            ]
-                        },
+                            "op": "max",
+                            "field": "year",
+                            "as": "last_year"
+                        }
+                    ]
+                },
+                {
+                    "aggregate": [
                         {
-                            "filter": "select.circuitId == datum.circuitId"
-                        },
-                        {
-                            "joinaggregate": [
-                                {
-                                    "op": "min",
-                                    "field": "year",
-                                    "as": "first_year"
-                                }
-                            ]
-                        },
-                        {
-                            "joinaggregate": [
-                                {
-                                    "op": "max",
-                                    "field": "year",
-                                    "as": "last_year"
-                                }
-                            ]
-                        },
-                        {
-                            "aggregate": [
-                                {
-                                    "op": "count",
-                                    "as": "seasons_present"
-                                }
-                            ],
-                            "groupby": [
-                                "name",
-                                "location",
-                                "country",
-                                "total_seasons",
-                                "first_year",
-                                "last_year"
-                            ]
-                        },
-                        {
-                            "calculate": "[toString(datum.name) + ' in ' + toString(datum.location) + ', ', toString(datum.country), ' This circuit has been present in ',  toString(datum.seasons_present) + ' of the ' + toString(datum.total_seasons) + ' total F1 seasons.', ' Its first use was in ' + toString(datum.first_year), ' and the last race held here was in ' + toString(datum.last_year) + '.']",
-                            "as": "CircuitSummaryText"
+                            "op": "count",
+                            "as": "seasons_present"
                         }
                     ],
-                    "mark": {
-                        "type": "text",
-                        "align": "left",
-                        "baseline": "bottom",
-                        "fontSize": 14,
-                        "fontWeight": "bold",
-                        "color": "white"
-                    },
-                    "encoding": {
-                        "text": {
-                            "field": "CircuitSummaryText",
-                            "type": "nominal"
-                        }
-                    }
+                    "groupby": [
+                        "name",
+                        "location",
+                        "country",
+                        "total_seasons",
+                        "first_year",
+                        "last_year"
+                    ]
+                },
+                {
+                    "calculate": "[toString(datum.name) + ' in ' + toString(datum.location) +  ', ' + toString(datum.country), ' This circuit has been present in ' + toString(datum.seasons_present) + ' of the ' + toString(datum.total_seasons) + ' total F1 seasons.', ' Its first use was in ' + toString(datum.first_year) + ' and the last race held here was in ' + toString(datum.last_year) + '.']",
+                    "as": "CircuitSummaryText"
                 }
-            ]
+            ],
+            "mark": {
+                "type": "text",
+                "color": "white",
+                "fontSize": 16,
+                "fontWeight": "bold",
+                "align": "left",
+                "baseline": "bottom"
+            },
+            "encoding": {
+                "text": {
+                    "field": "CircuitSummaryText",
+                    "type": "nominal"
+                }
+            }
+        },
+        {
+            "title": "Championship Seasons Active Timeline",
+            "width": 1100,
+            "height": 130,
+            "data": {
+                "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv",
+                "format": {
+                    "type": "csv"
+                }
+            },
+            "transform": [
+                {
+                    "filter": "select.circuitId == datum.circuitId"
+                },
+                {
+                    "lookup": "circuitId",
+                    "from": {
+                        "data": {
+                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv"
+                        },
+                        "key": "circuitId",
+                        "fields": [
+                            "name",
+                            "location",
+                            "country"
+                        ]
+                    }
+                },
+                {
+                    "aggregate": [
+                        {
+                            "op": "count",
+                            "as": "RacesInSeason"
+                        }
+                    ],
+                    "groupby": [
+                        "year",
+                        "name",
+                        "location",
+                        "country"
+                    ]
+                }
+            ],
+            "mark": {
+                "type": "bar",
+                "color": "palevioletred",
+                "cornerRadiusTopLeft": 3,
+                "cornerRadiusTopRight": 3
+            },
+            "encoding": {
+                "x": {
+                    "field": "year",
+                    "type": "quantitative",
+                    "title": "F1 Season (Year)",
+                    "scale": {
+                        "domain": [
+                            1950,
+                            2024
+                        ]
+                    },
+                    "axis": {
+                        "tickMinStep": 5,
+                        "labelAngle": 0,
+                        "format": "d"
+                    }
+                },
+                "y": {
+                    "field": "RacesInSeason",
+                    "type": "quantitative",
+                    "title": "Grands Prix Hosted",
+                    "axis": {
+                        "tickMinStep": 1
+                    },
+                    "format": "d"
+                },
+                "tooltip": [
+                    {
+                        "field": "name",
+                        "type": "nominal",
+                        "title": "Circuit"
+                    },
+                    {
+                        "field": "year",
+                        "type": "nominal",
+                        "title": "Season"
+                    },
+                    {
+                        "field": "RacesInSeason",
+                        "type": "quantitative",
+                        "title": "Races Held This Year"
+                    }
+                ]
+            }
         }
     ]
 }

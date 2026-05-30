@@ -15,15 +15,9 @@
 </head>
 
 <body class="max-w-screen h-full bg-gray-900 text-white text-lg font-Play">
-    <div class="grid grid-cols-3 w-full h-12 bg-black place-items-center px-12 rounded-b-xl">
-        <p class=" text-slate-400 text-sm">
-            Data Visualisation II
-        </p>
-        <p class=" text-slate-400 text-sm">
-            Samantha Matthews ~ 36157465
-        </p>
-        <p class=" text-slate-400 text-sm">
-            FIT2179
+    <div class="flex w-full h-12 bg-slate-800 place-items-center">
+        <p class=" text-slate-400 text-sm w-full text-center">
+            FIT2179 &ensp; ・ &ensp; DATA VISUALISATION II &ensp; ・ &ensp; SAMANTHA MATTHEWS &ensp; ・ &ensp; 36157465
         </p>
 
     </div>
@@ -52,8 +46,8 @@
     <!--                 -->
     <!--    CIRCUITS     -->
     <!--                 -->
-    <div id="circuits" class="m-32 mt-40">
-        <h2 class="text-6xl text-red-500 mb-12 font-Racing-Sans-One">
+    <div id="circuits" class="m-32 mt-48">
+        <h2 class="text-6xl text-red-500 mb-12 mt-36 font-Racing-Sans-One">
             The Circuits
         </h2>
         <p class="columns-2 h-fit mb-10 text-xl gap-10 text-slate-50">
@@ -86,79 +80,71 @@
             <p class="m-6 mb-0 text-sm self-end font-bold">
                 click on a circuit to see more information on it below
             </p>
+            <div id="region_selector" class="m-6">
+            </div>
 
             <div id="circuit_symbol_map" class="grow h-fit mx-4 p-10bg-blue-100 rounded-md overflow-hidden">
             </div>
 
             <script type="text/javascript">
-                var spec = './visualisations/circuit-graph-1.vg.json';
-                vegaEmbed('#circuit_symbol_map', spec).then(function (result) {
-                    result.view.resize().run();
+                document.addEventListener("DOMContentLoaded", function () {
+                    var spec = './visualisations/circuit-graph-1.vg.json';
 
-                    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-                }).catch(console.error);
+                    // We completely drop the complex "bind" JS settings object here
+                    vegaEmbed('#circuit_symbol_map', spec).then(function (result) {
+
+                        // TRICK: Find the dropdown Vega generated below the map, 
+                        // and physically move it inside your custom #region_selector div!
+                        const vegaBindContainer = document.querySelector('#circuit_symbol_map .vega-bind');
+                        if (vegaBindContainer) {
+                            document.getElementById('region_selector').appendChild(vegaBindContainer);
+                        }
+
+                        result.view.resize().run();
+                    }).catch(console.error);
+                });
             </script>
 
-            <div class="europe_map" class="hidden !important overflow-hidden">
-                <div id="europe_dot" class="h-fit aspect-[10/6] mx-4 bg-blue-100 rounded-md overflow-hidden">
-                </div>
-
-                <script type="text/javascript">
-                    var spec = './visualisations/europe_dotplot.vg.json';
-                    vegaEmbed('#europe_dot', spec, { actions: false }).then(function (result) {
-                        result.view.finalize();
-                        // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-                    }).catch(console.error);
-                </script>
-            </div>
-
         </div>
 
-
-        <div class="grid grid-cols-2 gap-10 h-fit mb-24">
-
-            <div
-                class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
-                <!-- Card Title + text -->
-                <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">Circuit Stats</h3>
-
-                <p class="mx-6">
-                    Introduce the Circuit.
-                </p>
-
-                <div id="circuit_usage" class="h-fit aspect-[10/6] m-4 bg-blue-100 rounded-md overflow-hidden">
+        <div
+            class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500 mb-24">
+            <!-- Card Title + text -->
+            <div class="grid grid-cols-2 grow h-fit gap-6">
+                <div>
+                    <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">
+                        Geographical Distrobution of Circuits over Time
+                    </h3>
+                    <p class="m-6">
+                        When looking at both the number and whereabouts of the circuits present in a season, it is clear
+                        that much has changed since the first year of F1.
+                        <br>
+                        Whilst fluctuating over the years, there is a clear positive trajectory in the number of races
+                        in a year, starting with only 7 in 1950, and increasing to 24 since then.
+                        <br>
+                        Additionally, the representation of continents in race locations has also fluctuated, with some
+                        continents only being present in earlier years (like Africa), and others only in later years
+                        (such as Oceania).
+                    </p>
                 </div>
 
-                <script type="text/javascript">
-                    var spec = './visualisations/circuit-usage.vg.json';
-                    vegaEmbed('#circuit_usage', spec).then(function (result) {
+                <div class="w-full h-full">
 
-                        // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-                    }).catch(console.error);
-                </script>
-            </div>
+                    <div id="circuit_stacked_bar" class="w-full aspect-[10/6] m-4 rounded-md overflow-hidden">
+                    </div>
 
-            <div
-                class="flex flex-col min-w-0 min-h-0 h-fit overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
-                <!-- Card Title + text -->
-                <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">Circuit Stats</h3>
+                    <script type="text/javascript">
+                        var spec = './visualisations/circuit-countries-over-time.vg.json';
+                        vegaEmbed('#circuit_stacked_bar', spec).then(function (result) {
+                            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+                        }).catch(console.error);
+                    </script>
 
-                <p class="mx-6">
-                    Have a look at the following graphs to explore the circuit.
-                </p>
-
-                <div id="circuit_symbol_map" class="h-fit aspect-[10/6] m-4 bg-blue-100 rounded-md overflow-hidden">
                 </div>
 
-                <script type="text/javascript">
-                    var spec = './visualisations/circuit-graph-1.vg.json';
-                    vegaEmbed('#circuit_symbol_map', spec).then(function (result) {
-                        // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-                    }).catch(console.error);
-                </script>
             </div>
-
         </div>
+
 
         <div class="grid grid-cols-2 gap-10 h-fit mb-10">
             <p class="h-fit mb-10 text-xl gap-10 text-slate-50">
@@ -179,22 +165,40 @@
             </h3>
 
             <p class="mx-6">
-
+                It appears that certain routes have become popular over time within the F1 calendar. Despite the large
+                array of circuits that have been used over the years, many routes between circuits have been used
+                greater than 10 times. For example, <strong>Albert Park and Sepang</strong> have appeared consecutively
+                in the F1
+                calendar <strong>14 times</strong>, whilst the route from the <strong>Hockenheimring to the
+                    Hangaroring</strong> has been used <strong>27 times</strong>.
+                Whilst we must remember that some circuits have been used considerably more than others, there are no
+                doubt trends in the flow from circuit to circuit over the seasons.
             </p>
 
             <p class="m-6 mb-0 text-sm self-end font-bold">
-                click on a circuit to see more information on it below
+                hint: move the cursor near circuits to see the incoming and outgoing flows.
             </p>
 
 
-            <div id="circuit_flow_map" class="h-fit aspect-[10/6] m-4 bg-blue-100 rounded-md overflow-hidden">
+
+
+            <div id="circuit_flow_map" class="h-full aspect-[10/6] w-full m-4 rounded-md ">
             </div>
 
             <script type="text/javascript">
-                var spec = './visualisations/circuit-flow-map.vg.json';
-                vegaEmbed('#circuit_flow_map', spec).then(function (result) {
-                    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-                }).catch(console.error);
+                document.addEventListener("DOMContentLoaded", function () {
+                    var spec = './visualisations/circuit-flow-map.vg.json';
+
+                    vegaEmbed('#circuit_flow_map', spec, {
+                        actions: false, // Optional: Hides the "three dots" Vega menu for a cleaner look
+                        width: "container" // Forces the embed compiler to listen to container scales
+                    }).then(function (result) {
+                        result.view.resize().run();
+
+
+
+                    }).catch(console.error);
+                });
             </script>
         </div>
 
@@ -224,9 +228,19 @@
                 </p>
             </div>
             <div
-                class="flex flex-col min-w-0 min-h-0 h-fit overflow-hidden mb-10 rounded-2xl bg-slate-700 shadow shadow-lg">
+                class="flex flex-col min-w-0 min-h-0 h-fit overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500 mb-10">
+                <!-- Card Title + text -->
+                <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">A Global View of F1 Circuits</h3>
+
+                <p class="mx-6">
+                    The European origins of the sport are evident in the geographical cluster of circuits throughout
+                    central
+                    Europe. Despite this, globalisation of F1 has led to circuits across all continents being used, many
+                    of
+                    which are still a part of the F1 calendar.
+                </p>
                 <!-- right column -->
-                <div id="vis" class="grow m-1.5 bg-blue-100 rounded-xl overflow-hidden aspect-[21/9] "></div>
+                <div id="vis" class="grow m-4 overflow-hidden aspect-[10/6] "></div>
 
                 <script type="text/javascript">
                     var spec = './visualisations/drivers-nationalities-chorepleth.vg.json';
@@ -237,41 +251,47 @@
             </div>
 
             <div class="grid grid-cols-2 gap-10 mb-10">
-                <div class="h-fit">
-                    <p class="mb-10">
-                        There is no doubt that europeans dominate the competition, however, Americans make up the second
-                        highest proportion of drivers.
-                        <br>
-                        Despite this, when looking at data from 2000-2024, there is a clear German and British dominance
-                        in championship wins.
-                    </p>
-
-
-                    <div
-                        class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
-                        <!-- Card Title + text -->
-                        <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">Continent Representation in Drivers over Time
-                        </h3>
-
-                        <p class="mx-6">
-                            Throughout F1 history, it can be seen that Europeans make up a dominant proportion of the
-                            drivers on track. Other continent representation fluctuates drastically, such as a peak of
-                            African drivers in the 60s and of North American drivers in the 50s.
-                        </p>
-
-                        <div id="driver_continent_props" class="h-fit aspect-[10/6] m-4 rounded-md overflow-hidden">
-                        </div>
-
-                        <script type="text/javascript">
-                            var spec = './visualisations/winner-nationalities.vg.json';
-                            vegaEmbed('#driver_continent_props', spec).then(function (result) {
-                                // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-                            }).catch(console.error);
-                        </script>
-                    </div>
-
+                <div>
 
                 </div>
+
+                <p class="mb-10">
+                    There is no doubt that europeans dominate the competition, however, Americans make up the second
+                    highest proportion of drivers.
+                    <br>
+                    Despite this, when looking at data from 2000-2024, there is a clear German and British dominance
+                    in championship wins.
+                </p>
+            </div>
+            <div class="grid grid-cols-2 gap-10 mb-10">
+
+
+
+
+                <div
+                    class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
+                    <!-- Card Title + text -->
+                    <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">Continent Representation in Drivers over Time
+                    </h3>
+
+                    <p class="mx-6">
+                        Throughout F1 history, it can be seen that Europeans make up a dominant proportion of the
+                        drivers on track. Other continent representation fluctuates drastically, such as a peak of
+                        African drivers in the 60s and of North American drivers in the 50s.
+                    </p>
+
+                    <div id="driver_continent_props" class="h-fit aspect-[10/6] m-4 rounded-md overflow-hidden">
+                    </div>
+
+                    <script type="text/javascript">
+                        var spec = './visualisations/winner-nationalities.vg.json';
+                        vegaEmbed('#driver_continent_props', spec).then(function (result) {
+                            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+                        }).catch(console.error);
+                    </script>
+                </div>
+
+
 
                 <div
                     class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
@@ -298,8 +318,7 @@
         </div>
     </div>
 
-    <div
-        class="grid grid-cols-2 min-w-0 min-h-0 h-fit overflow-hidden mb-10 rounded-3xl bg-slate-700 p-32 gap-10 shadow shadow-lg">
+    <div class="min-w-0 min-h-0 h-fit overflow-hidden mb-10 bg-slate-800 p-32 gap-10 shadow shadow-lg">
         <div class="flex flex-col min-w-0 min-h-0 h-full mb-10">
             <h2 class="text-2xl font-bold">
                 Driver Dashboard
@@ -308,17 +327,21 @@
                 Choose which driver you want to look at in more detail by selecting from the graph below (have not
                 implemented yet).
             </p>
-            <div id="top-drivers" class="grow aspect-[2/1] rounded-xl overflow-hidden"></div>
 
-            <script type="text/javascript">
-                var spec = './visualisations/top-driver-wins-bar.vg.json';
-                vegaEmbed('#top-drivers', spec).then(function (result) {
-                    // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-                }).catch(console.error);
-            </script>
+            <div class="w-full h-fit">
+
+                <div id="top-drivers" class="w-full aspect-[1/3] h-fit rounded-xl overflow-hidden"></div>
+
+                <script type="text/javascript">
+                    var spec = './visualisations/top-driver-wins-bar.vg.json';
+                    vegaEmbed('#top-drivers', spec).then(function (result) {
+                        // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+                    }).catch(console.error);
+                </script>
+            </div>
 
 
-        </div>
+            <!-- </div>
         <div class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden mb-10">
             <p class="font-bold mb-4">
                 Lewis Hamilton (example)
@@ -362,9 +385,11 @@
 
 
 
+        </div> -->
         </div>
 
     </div>
+
 
 
 
@@ -379,39 +404,26 @@
             <div class="">
                 <!-- left column -->
                 <p class="mb-10">
-                    The constructors of Formula One – responsible for designing and developing the cars competing in the
-                    championship – are heavily concentrated in a small number of countries that have strong automotive
+                    The constructors of Formula One – responsible for designing and developing the cars competing in
+                    the
+                    championship – are heavily concentrated in a small number of countries that have strong
+                    automotive
                     and engineering industries.
                     <br>
                     <br>
                     The United Kingdom has historically been the dominant hub for Formula One teams, with many
                     successful constructors operating from “Motorsport Valley” in England. Other influential nations
-                    include Italy, known for iconic manufacturers and racing heritage, as well as Germany and France,
+                    include Italy, known for iconic manufacturers and racing heritage, as well as Germany and
+                    France,
                     which have contributed major manufacturers and technical innovation to the sport.
                     The concentration of constructors in these countries highlights the importance of engineering
-                    expertise, industrial infrastructure, and long-standing motorsport culture in Formula One history.
+                    expertise, industrial infrastructure, and long-standing motorsport culture in Formula One
+                    history.
 
                 </p>
 
             </div>
-            <div
-                class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
-                <!-- Card Title + text -->
-                <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One"> Constructors with Greatest Grand Prix Success </h3>
 
-                <p class="mx-6">
-                    As the oldest constructor, competing in every F1 season since 1950, it's no surprise that
-                    <strong>Ferrari</strong> holds the highest number Grand Prix wins.
-                </p>
-                <!-- <div id="constructor_wins" class="h-fit aspect-[10/8] m-4 rounded-md overflow-hidden"></div>
-
-                    <script type="text/javascript">
-                        var spec = './visualisations/top-constructor-wins-bar.vg.json';
-                        vegaEmbed('#constructor_wins', spec).then(function (result) {
-                            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
-                        }).catch(console.error);
-                    </script> -->
-            </div>
 
         </div>
 
@@ -421,8 +433,10 @@
             <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">Origins of F1 Constructors</h3>
 
             <p class="mx-6">
-                The European origins of the sport are evident in the geographical cluster of circuits throughout central
-                Europe. Despite this, globalisation of F1 has led to circuits across all continents being used, many of
+                The European origins of the sport are evident in the geographical cluster of circuits throughout
+                central
+                Europe. Despite this, globalisation of F1 has led to circuits across all continents being used, many
+                of
                 which are still a part of the F1 calendar.
             </p>
 
@@ -442,13 +456,61 @@
             </script>
         </div>
 
-        <div class="grid grid-cols-2 gap-10 mb-10">
-            <div class="h-fit">
 
-
-
+        <div class="grid grid-cols-2 gap-10 m-10">
+            <p>
+                fdks
+            </p>
+            <div class="h-fit w-full">
                 <div
-                    class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
+                    class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 border border-slate-500">
+                    <!-- Card Title + text -->
+                    <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">
+                        European Team Proportion of Total F1 Constructors
+                    </h3>
+                    <p class="mx-6">
+                        Representing over 70% of the 212 constructors seen throughout F1 history, European teams
+                        dominate
+                        the competition.
+                    </p>
+
+                    <div id="europe_proportion" class="h-fit grow aspect-[3/2] m-4 rounded-md overflow-hidden">
+                    </div>
+
+                    <script type="text/javascript">
+                        var spec = './visualisations/europe_proportion.vg.json';
+                        vegaEmbed('#europe_proportion', spec).then(function (result) {
+                            // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
+                        }).catch(console.error);
+                    </script>
+
+
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+        <div class="grid grid-cols-2 m-10 h-fit gap-10">
+            <p>
+
+            </p>
+            <p class="text-xl mb-10">
+                Whilst we have seen that the European teams make up a large proportion of the F1 grid, that does not
+                necessarily guarentee success. Let's turn our attention now to the teams with the highest Grand Prix
+                wins of
+                all time (left) and compare how they have fared over time (right).
+            </p>
+
+        </div>
+
+
+        <div class="grid grid-cols-2 gap-10 m-10 mb-10">
+            <div class="h-fit">
+                <div
+                    class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 border border-slate-500">
                     <!-- Card Title + text -->
                     <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One"> Top Constructors Accumulated Success
                     </h3>
@@ -476,7 +538,8 @@
             <div
                 class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500">
                 <!-- Card Title + text -->
-                <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One"> Constructors with Greatest Grand Prix Success </h3>
+                <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One"> Constructors with Greatest Grand Prix Success
+                </h3>
 
                 <p class="mx-6">
                     As the oldest constructor, competing in every F1 season since 1950, it's no surprise that
@@ -490,6 +553,55 @@
                         // Access the Vega view instance (https://vega.github.io/vega/docs/api/view/) as result.view
                     }).catch(console.error);
                 </script>
+            </div>
+        </div>
+
+
+
+
+
+        <div
+            class="flex flex-col min-w-0 min-h-0 h-full overflow-hidden rounded-xl bg-slate-800 shadow shadow-lg border border-slate-500 mb-24">
+            <!-- Card Title + text -->
+            <div class="grid grid-cols-2 grow h-fit gap-10">
+                <div>
+                    <h3 class="m-6 mb-2 text-2xl font-Racing-Sans-One">
+                        Distribution of Contructor Championship Results
+                    </h3>
+                    <p class="mx-6">
+                        yada yada yada
+                    </p>
+                </div>
+
+                <div class="w-full h-full">
+                    <div id="search_input" class="m-6">
+                    </div>
+
+                    <div id="constructor_standing_histogram"
+                        class="h-fit aspect-[10/8] w-full m-4 rounded-md overflow-hidden">
+                    </div>
+
+                    <script type="text/javascript">
+                        document.addEventListener("DOMContentLoaded", function () {
+                            var spec = './visualisations/constructor_standing_histogram.vg.json';
+
+                            // We completely drop the complex "bind" JS settings object here
+                            vegaEmbed('#constructor_standing_histogram', spec).then(function (result) {
+
+                                // TRICK: Find the dropdown Vega generated below the map, 
+                                // and physically move it inside your custom #region_selector div!
+                                const vegaBindContainer = document.querySelector('#constructor_standing_histogram .vega-bind');
+                                if (vegaBindContainer) {
+                                    document.getElementById('search_input').appendChild(vegaBindContainer);
+                                }
+
+                                result.view.resize().run();
+                            }).catch(console.error);
+                        });
+                    </script>
+
+                </div>
+
             </div>
         </div>
 

@@ -1,0 +1,105 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "width": "container",
+    "height": "container",
+    "autosize": {
+        "type": "fit"
+    },
+    "background": "transparent",
+    "config": {
+        "title": {
+            "color": "white"
+        },
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
+        }
+    },
+    "data": {
+        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    "transform": [
+        {
+            "lookup": "circuitId",
+            "from": {
+                "data": {
+                    "url": "../f1-data/circuits_cleaned.csv"
+                },
+                "key": "circuitId",
+                "fields": [
+                    "country",
+                    "Continent"
+                ]
+            }
+        },
+        {
+            "aggregate": [
+                {
+                    "op": "count",
+                    "as": "continentCount"
+                }
+            ],
+            "groupby": [
+                "year",
+                "Continent"
+            ]
+        },
+        {
+            "calculate": "toNumber(datum.year)",
+            "as": "yearNum"
+        }
+    ],
+    "mark": "bar",
+    "encoding": {
+        "x": {
+            "field": "yearNum",
+            "type": "ordinal",
+            "title": "Season",
+            "axis": {
+                "format": "d",
+                "labelAngle": 0,
+                "values": [
+                    1950,
+                    1960,
+                    1970,
+                    1980,
+                    1990,
+                    2000,
+                    2010,
+                    2020
+                ]
+            }
+        },
+        "y": {
+            "field": "continentCount",
+            "type": "quantitative",
+            "title": "Circuit Count"
+        },
+        "color": {
+            "field": "Continent",
+            "type": "nominal",
+            "scale": {
+                "scheme": "tableau10"
+            }
+        },
+        "tooltip": [
+            {
+                "field": "Continent",
+                "title": "Continent"
+            },
+            {
+                "field": "continentCount",
+                "title": "Count"
+            }
+        ]
+    }
+}
