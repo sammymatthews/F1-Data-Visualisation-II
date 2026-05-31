@@ -23,7 +23,7 @@
         }
     },
     "data": {
-        "url": "./f1-data/drivers_cleaned.csv",
+        "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/drivers_cleaned.csv",
         "format": {
             "type": "csv"
         }
