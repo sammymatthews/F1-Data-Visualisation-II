@@ -10,7 +10,8 @@
     },
     "config": {
         "title": {
-            "color": "white"
+            "color": "white",
+            "offset": 15
         },
         "axis": {
             "domainColor": "white",
@@ -43,6 +44,7 @@
     ],
     "vconcat": [
         {
+            "title": "Geographical Distribution of F1 Circuits",
             "width": 1100,
             "height": 500,
             "projection": {
@@ -139,8 +141,8 @@
                     ],
                     "mark": {
                         "type": "circle",
-                        "fill": "#ff81ad",
-                        "stroke": "#ff659b"
+                        "fill": "#ff5757",
+                        "stroke": "#b44343"
                     },
                     "encoding": {
                         "longitude": {
@@ -164,16 +166,26 @@
                                     "value": 1
                                 }
                             ],
-                            "value": 0.5
+                            "value": 0.8
                         },
                         "size": {
                             "field": "races_per_circuit",
                             "type": "quantitative",
                             "title": "Total Races Held",
                             "scale": {
-                                "range": [
+                                "type": "threshold",
+                                "domain": [
+                                    5,
+                                    10,
                                     20,
-                                    400
+                                    50
+                                ],
+                                "range": [
+                                    40,
+                                    80,
+                                    160,
+                                    320,
+                                    500
                                 ]
                             },
                             "legend": {
@@ -215,6 +227,11 @@
                                 "field": "country",
                                 "type": "nominal",
                                 "title": "Country"
+                            },
+                            {
+                                "field": "races_per_circuit",
+                                "type": "quantitative",
+                                "title": "Total Races Held"
                             }
                         ]
                     }
@@ -310,7 +327,7 @@
             }
         },
         {
-            "title": "Championship Seasons Active Timeline",
+            "title": "Selected Circuit Active Seasons Timeline",
             "width": 1100,
             "height": 130,
             "data": {
@@ -354,7 +371,7 @@
             ],
             "mark": {
                 "type": "bar",
-                "color": "palevioletred",
+                "color": "#ff5757",
                 "cornerRadiusTopLeft": 3,
                 "cornerRadiusTopRight": 3
             },

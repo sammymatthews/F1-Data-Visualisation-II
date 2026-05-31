@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "Total Grand Prix Wins per Constructor",
+    "title": "Accumulation of Wins across Seasons by Top Constructors",
     "width": "container",
     "height": "container",
     "autosize": {
@@ -161,6 +161,15 @@
                 },
                 "color": {
                     "field": "constructorName",
+                    "scale": {
+                        "range": [
+                            "#e45756",
+                            "#f58518",
+                            "#72b7b2",
+                            "#4c78a8",
+                            "#54a24b"
+                        ]
+                    },
                     "legend": {
                         "title": "Constructor Name"
                     }

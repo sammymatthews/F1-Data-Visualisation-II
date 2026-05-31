@@ -1,0 +1,153 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Constructors with Greatest Number of Grand Prix Wins",
+    "width": "container",
+    "height": "container",
+    "autosize": {
+        "type": "fit"
+    },
+    "background": "transparent",
+    "config": {
+        "title": {
+            "color": "white"
+        },
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
+        }
+    },
+    "data": {
+        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/results.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    "transform": [
+        {
+            "lookup": "constructorId",
+            "from": {
+                "data": {
+                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/constructors.csv"
+                },
+                "key": "constructorId",
+                "fields": [
+                    "name",
+                    "nationality"
+                ]
+            },
+            "as": [
+                "constructorName",
+                "nationality"
+            ]
+        },
+        {
+            "filter": "datum.positionOrder == 1"
+        },
+        {
+            "aggregate": [
+                {
+                    "op": "sum",
+                    "field": "positionOrder",
+                    "as": "totalWins"
+                }
+            ],
+            "groupby": [
+                "constructorName",
+                "nationality"
+            ]
+        },
+        {
+            "window": [
+                {
+                    "op": "rank",
+                    "field": "totalWins",
+                    "as": "constructorRank"
+                }
+            ],
+            "sort": [
+                {
+                    "field": "totalWins",
+                    "order": "descending"
+                }
+            ]
+        },
+        {
+            "filter": "datum.constructorRank <= 10"
+        }
+    ],
+    "layer": [
+        {
+            "mark": {
+                "type": "bar"
+            },
+            "encoding": {
+                "y": {
+                    "field": "constructorName",
+                    "type": "nominal",
+                    "sort": {
+                        "field": "totalWins",
+                        "op": "sum",
+                        "order": "descending"
+                    },
+                    "title": "Constructor Name"
+                },
+                "x": {
+                    "field": "totalWins",
+                    "type": "quantitative",
+                    "title": "Total Grand Prix wins"
+                },
+                "tooltip": [
+                    {
+                        "field": "totalWins",
+                        "title": "Total Grand Prix wins"
+                    },
+                    {
+                        "field": "constructorName",
+                        "title": "Constructor"
+                    }
+                ],
+                "color": {
+                    "field": "nationality",
+                    "legend": {
+                        "title": "Constructor Nationality"
+                    }
+                }
+            }
+        },
+        {
+            "mark": {
+                "type": "text",
+                "color": "white",
+                "xOffset": -8,
+                "align": "right"
+            },
+            "encoding": {
+                "y": {
+                    "field": "constructorName",
+                    "type": "nominal",
+                    "sort": {
+                        "field": "totalWins",
+                        "op": "sum",
+                        "order": "descending"
+                    },
+                    "title": "Constructor Name"
+                },
+                "x": {
+                    "field": "totalWins",
+                    "type": "quantitative",
+                    "title": "Total Grand Prix wins"
+                },
+                "text": {
+                    "field": "totalWins",
+                    "type": "quantitative"
+                }
+            }
+        }
+    ]
+}

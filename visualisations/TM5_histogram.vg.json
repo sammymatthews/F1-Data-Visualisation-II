@@ -1,5 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Distribution of Final Positions in Constructors Championship",
     "width": "container",
     "height": "container",
     "autosize": {
@@ -88,7 +89,7 @@
         {
             "mark": {
                 "type": "bar",
-                "color": "darkolivegreen"
+                "color": "#72b7b2"
             },
             "encoding": {
                 "x": {
@@ -175,10 +176,47 @@
                     "field": "position"
                 },
                 "color": {
-                    "value": "hotpink"
+                    "value": "#e45756"
                 },
                 "size": {
                     "value": 3
+                }
+            }
+        },
+        {
+            "transform": [
+                {
+                    "aggregate": [
+                        {
+                            "op": "mean",
+                            "field": "position",
+                            "as": "meanPosition"
+                        }
+                    ]
+                },
+                {
+                    "calculate": "'mean position: ' + format(datum.meanPosition, '.2f')",
+                    "as": "meanText"
+                }
+            ],
+            "mark": {
+                "type": "text",
+                "xOffset": 75,
+                "size": 14
+            },
+            "encoding": {
+                "x": {
+                    "field": "meanPosition",
+                    "type": "quantitative"
+                },
+                "y": {
+                    "value": 60
+                },
+                "color": {
+                    "value": "#e45756"
+                },
+                "text": {
+                    "field": "meanText"
                 }
             }
         }

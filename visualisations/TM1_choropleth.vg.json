@@ -1,10 +1,27 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "F1 Circuits around the globe",
+    "title": "Proportion of F1 Constructor Nationalities",
     "width": "container",
     "height": "container",
-    "autosize": {"type": "fit", "contains": "padding"},
+    "autosize": {
+        "type": "fit"
+    },
     "background": "transparent",
+    "config": {
+        "title": {
+            "color": "white"
+        },
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
+        }
+    },
     "projection": {
         "type": "equalEarth"
     },
@@ -19,7 +36,7 @@
             },
             "mark": {
                 "type": "geoshape",
-                "fill": "white", 
+                "fill": null,
                 "stroke": "lightgray"
             }
         },
@@ -40,18 +57,43 @@
                         },
                         "key": "country",
                         "fields": [
-                            "country", "circuit_count"
+                            "country",
+                            "constructor_count"
                         ]
                     }
+                },
+                {
+                    "joinaggregate": [
+                        {
+                            "op": "sum",
+                            "field": "constructor_count",
+                            "as": "totalConstructors"
+                        }
+                    ]
+                },
+                {
+                    "calculate": "datum.constructor_count / datum.totalConstructors",
+                    "as": "proportion"
+                },
+                {
+                    "filter": "datum.proportion > 0"
                 }
             ],
             "mark": {
-                "type": "geoshape"
+                "type": "geoshape",
+                "stroke": "lightgray"
             },
             "encoding": {
                 "color": {
-                    "field": "circuit_count",
-                    "type": "quantitative"
+                    "field": "proportion",
+                    "type": "quantitative",
+                    "scale": {
+                        "domain": [
+                            0,
+                            0.5
+                        ],
+                        "scheme": "reds"
+                    }
                 },
                 "tooltip": [
                     {
@@ -59,8 +101,13 @@
                         "title": "Country"
                     },
                     {
-                        "field": "circuit_count",
-                        "title": "Circuit Count"
+                        "field": "constructor_count",
+                        "title": "Constructor Count"
+                    },
+                    {
+                        "field": "proportion",
+                        "title": "Constructor Proportion",
+                        "format": ".1%"
                     }
                 ]
             }

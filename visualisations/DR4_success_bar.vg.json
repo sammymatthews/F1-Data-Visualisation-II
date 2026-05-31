@@ -1,6 +1,5 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "Top 10 Grand Prix Winners (Drivers)",
     "width": "container",
     "height": "container",
     "autosize": {
@@ -10,7 +9,8 @@
     "background": "transparent",
     "config": {
         "title": {
-            "color": "white"
+            "color": "white",
+            "align": "center"
         },
         "axis": {
             "domainColor": "white",
@@ -91,6 +91,7 @@
     ],
     "vconcat": [
         {
+            "title": "Drivers with the Greatest Number of Grand Prix Wins",
             "width": 700,
             "height": 200,
             "params": [
@@ -119,11 +120,7 @@
                 "y": {
                     "field": "driverName",
                     "type": "nominal",
-                    "sort": {
-                        "field": "totalWins",
-                        "op": "sum",
-                        "order": "descending"
-                    },
+                    "sort": "-x",
                     "title": "Driver Name"
                 },
                 "x": {
@@ -134,8 +131,12 @@
                 "color": {
                     "field": "nationality",
                     "type": "nominal",
+                    "scale": {
+                        "scheme": "tableau10"
+                    },
                     "legend": {
-                        "orient": "right"
+                        "orient": "right",
+                        "title": "Driver Nationality"
                     }
                 },
                 "fillOpacity": {
@@ -167,13 +168,13 @@
                     },
                     {
                         "field": "driverRank",
-                        "title": "Rank"
+                        "title": "Top 10 Position"
                     }
                 ]
             }
         },
         {
-            "title": "Driver wins over time",
+            "title": "Selected Driver Wins across Active Seasons",
             "height": 200,
             "width": 700,
             "data": {
@@ -244,7 +245,7 @@
             ],
             "mark": {
                 "type": "bar",
-                "color": "goldenrod"
+                "color": "#bab0ac"
             },
             "encoding": {
                 "y": {

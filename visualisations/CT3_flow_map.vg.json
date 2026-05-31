@@ -141,12 +141,15 @@
                 {
                     "calculate": "toggle_outgoing ? 0.8 : 0",
                     "as": "opacity"
+                },
+                {
+                    "calculate": "'Outgoing'",
+                    "as": "direction"
                 }
             ],
             "mark": {
                 "type": "rule",
-                "strokeCap": "round",
-                "color": "#e16059"
+                "strokeCap": "round"
             },
             "encoding": {
                 "longitude": {
@@ -164,6 +167,27 @@
                 "latitude2": {
                     "field": "next_lat",
                     "type": "quantitative"
+                },
+                "color": {
+                    "value": "#e16059",
+                    "legend": true
+                },
+                "color": {
+                    "field": "direction",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": [
+                            "Outgoing",
+                            "Incoming"
+                        ],
+                        "range": [
+                            "#e16059",
+                            "#fed55b"
+                        ]
+                    },
+                    "legend": {
+                        "title": "Flow Direction"
+                    }
                 },
                 "size": {
                     "field": "transition_count",
@@ -252,12 +276,15 @@
                 {
                     "calculate": "toggle_incoming ? 0.8 : 0",
                     "as": "opacity"
+                },
+                {
+                    "calculate": "'Incoming'",
+                    "as": "direction"
                 }
             ],
             "mark": {
                 "type": "rule",
                 "strokeCap": "round",
-                "color": "#fed55b",
                 "strokeDash": [
                     8,
                     4
@@ -298,6 +325,23 @@
                     },
                     "legend": {
                         "title": "Times Traveled"
+                    }
+                },
+                "color": {
+                    "field": "direction",
+                    "type": "nominal",
+                    "scale": {
+                        "domain": [
+                            "Outgoing",
+                            "Incoming"
+                        ],
+                        "range": [
+                            "#e16059",
+                            "#fed55b"
+                        ]
+                    },
+                    "legend": {
+                        "title": "Flow Direction"
                     }
                 },
                 "strokeOpacity": {

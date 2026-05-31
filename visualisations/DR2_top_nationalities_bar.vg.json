@@ -1,0 +1,144 @@
+{
+    "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": {
+        "text": "Top Driver Nationalities",
+        "color": "white"
+    },
+    "width": "container",
+    "height": "container",
+    "autosize": {
+        "type": "fit"
+    },
+    "background": "transparent",
+    "config": {
+        "axis": {
+            "domainColor": "white",
+            "labelColor": "white",
+            "tickColor": "white",
+            "titleColor": "white"
+        },
+        "legend": {
+            "titleColor": "white",
+            "labelColor": "white"
+        }
+    },
+    "data": {
+        "url": "./f1-data/drivers_cleaned.csv",
+        "format": {
+            "type": "csv"
+        }
+    },
+    "transform": [
+        {
+            "joinaggregate": [
+                {
+                    "op": "count",
+                    "field": "driverId",
+                    "as": "totalDrivers"
+                }
+            ],
+            "groupby": [
+                "nationality"
+            ]
+        },
+        {
+            "window": [
+                {
+                    "op": "dense_rank",
+                    "as": "nationalityRank"
+                }
+            ],
+            "sort": [
+                {
+                    "field": "totalDrivers",
+                    "order": "descending"
+                }
+            ]
+        },
+        {
+            "filter": "datum.nationalityRank <= 10"
+        }
+    ],
+    "layer": [
+        {
+            "mark": {
+                "type": "bar"
+            },
+            "encoding": {
+                "y": {
+                    "field": "nationality",
+                    "type": "nominal",
+                    "sort": {
+                        "field": "totalDrivers",
+                        "op": "sum",
+                        "order": "descending"
+                    },
+                    "title": "Driver Nationality"
+                },
+                "x": {
+                    "field": "totalDrivers",
+                    "aggregate": "max",
+                    "type": "quantitative",
+                    "title": "Driver Count"
+                },
+                "tooltip": [
+                    {
+                        "field": "totalDrivers",
+                        "title": "Driver Count"
+                    },
+                    {
+                        "field": "nationality",
+                        "title": "Nationality"
+                    }
+                ],
+                "color": {
+                    "field": "Continent",
+                    "scale": {
+                        "scheme": "tableau10"
+                    }
+                }
+            }
+        },
+        {
+            "mark": {
+                "type": "text",
+                "color": "white",
+                "xOffset": -8,
+                "align": "right"
+            },
+            "encoding": {
+                "y": {
+                    "field": "nationality",
+                    "type": "nominal",
+                    "sort": {
+                        "field": "totalDrivers",
+                        "op": "sum",
+                        "order": "descending"
+                    },
+                    "title": "Driver Nationality"
+                },
+                "x": {
+                    "field": "totalDrivers",
+                    "aggregate": "max",
+                    "type": "quantitative",
+                    "title": "Driver Count"
+                },
+                "text": {
+                    "field": "totalDrivers",
+                    "aggregate": "max",
+                    "type": "quantitative"
+                },
+                "tooltip": [
+                    {
+                        "field": "totalDrivers",
+                        "title": "Driver Count"
+                    },
+                    {
+                        "field": "nationality",
+                        "title": "Nationality"
+                    }
+                ]
+            }
+        }
+    ]
+}

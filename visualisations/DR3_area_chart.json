@@ -1,5 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+    "title": "Proportion of Continent Representation in Drivers per Season",
     "width": "container",
     "height": "container",
     "autosize": {
@@ -13,6 +14,9 @@
         }
     },
     "config": {
+        "title": {
+            "color": "white"
+        },
         "axis": {
             "domainColor": "white",
             "labelColor": "white",

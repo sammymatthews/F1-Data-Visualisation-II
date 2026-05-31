@@ -1,6 +1,6 @@
 {
     "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-    "title": "F1 Constructor Nationalities",
+    "title": "Proportion of F1 Driver Nationalities",
     "width": "container",
     "height": "container",
     "autosize": {
@@ -36,8 +36,9 @@
             },
             "mark": {
                 "type": "geoshape",
-                "fill": null,
-                "stroke": "lightgray"
+                "fill": "#50657f46",
+                "stroke": "white",
+                "strokeOpacity": 0.6
             }
         },
         {
@@ -58,25 +59,38 @@
                         "key": "country",
                         "fields": [
                             "country",
-                            "constructor_count"
+                            "driver_count"
                         ]
                     }
+                },
+                {
+                    "joinaggregate": [
+                        {
+                            "op": "sum",
+                            "field": "driver_count",
+                            "as": "totalDrivers"
+                        }
+                    ]
+                },
+                {
+                    "calculate": "datum.driver_count / datum.totalDrivers",
+                    "as": "proportion"
+                },
+                {
+                    "filter": "datum.proportion > 0"
                 }
             ],
             "mark": {
                 "type": "geoshape",
-                "stroke": "white"
+                "stroke": "lightgray"
             },
             "encoding": {
                 "color": {
-                    "field": "constructor_count",
+                    "field": "proportion",
                     "type": "quantitative",
-                    "legend": {
-                        "orient": "bottom-right",
-                        "padding": 0
-                    },
                     "scale": {
-                        "scheme": "reds"
+                        "domain": [0,0.2],
+                        "scheme": "teals"
                     }
                 },
                 "tooltip": [
@@ -85,8 +99,13 @@
                         "title": "Country"
                     },
                     {
-                        "field": "constructor_count",
-                        "title": "Constructor Count"
+                        "field": "driver_count",
+                        "title": "Driver Count"
+                    },
+                    {
+                        "field": "proportion",
+                        "title": "Driver Proportion",
+                        "format": ".1%"
                     }
                 ]
             }

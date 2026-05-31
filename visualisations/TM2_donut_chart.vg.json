@@ -89,8 +89,8 @@
                             "Other"
                         ],
                         "range": [
-                            "pink",
-                            "darkgray"
+                            "#72b7b2",
+                            "#5e6c7e"
                         ]
                     }
                 },
@@ -116,7 +116,7 @@
             ],
             "mark": {
                 "type": "text",
-                "color": "white",
+                "color": "#fdfeff",
                 "fontSize": 28,
                 "fontWeight": "bold",
                 "align": "center",
