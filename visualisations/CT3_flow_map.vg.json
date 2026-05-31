@@ -61,7 +61,7 @@
         },
         {
             "data": {
-                "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits.csv",
+                "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits_cleaned.csv",
                 "format": {
                     "type": "csv"
                 }
@@ -110,7 +110,7 @@
                     "lookup": "circuitId",
                     "from": {
                         "data": {
-                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits.csv",
+                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits_cleaned.csv",
                             "format": {
                                 "type": "csv"
                             }
@@ -126,7 +126,7 @@
                     "lookup": "next_circuit",
                     "from": {
                         "data": {
-                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits.csv",
+                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits_cleaned.csv",
                             "format": {
                                 "type": "csv"
                             }
@@ -232,7 +232,7 @@
         },
         {
             "data": {
-                "url": "../f1-data/circuit_flows.csv",
+                "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuit_flows.csv",
                 "format": {
                     "type": "csv"
                 }
@@ -245,7 +245,7 @@
                     "lookup": "circuitId",
                     "from": {
                         "data": {
-                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits.csv",
+                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits_cleaned.csv",
                             "format": {
                                 "type": "csv"
                             }
@@ -261,7 +261,7 @@
                     "lookup": "next_circuit",
                     "from": {
                         "data": {
-                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits.csv",
+                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits_cleaned.csv",
                             "format": {
                                 "type": "csv"
                             }
