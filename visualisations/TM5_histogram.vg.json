@@ -24,7 +24,7 @@
         }
     },
     "data": {
-        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/constructor_standings.csv",
+        "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/constructor_standings.csv",
         "format": {
             "type": "csv"
         }
@@ -45,7 +45,7 @@
             "lookup": "constructorId",
             "from": {
                 "data": {
-                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/constructors_cleaned.csv"
+                    "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/constructors_cleaned.csv"
                 },
                 "key": "constructorId",
                 "fields": [
@@ -57,7 +57,7 @@
             "lookup": "raceId",
             "from": {
                 "data": {
-                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv"
+                    "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/races.csv"
                 },
                 "key": "raceId",
                 "fields": [
