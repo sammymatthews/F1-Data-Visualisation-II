@@ -23,7 +23,7 @@
         }
     },
     "data": {
-        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/results.csv",
+        "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/results.csv",
         "format": {
             "type": "csv"
         }
@@ -33,7 +33,7 @@
             "lookup": "constructorId",
             "from": {
                 "data": {
-                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/constructors.csv"
+                    "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/constructors.csv"
                 },
                 "key": "constructorId",
                 "fields": [
