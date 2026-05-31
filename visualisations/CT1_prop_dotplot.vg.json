@@ -100,7 +100,7 @@
                         }
                     ],
                     "data": {
-                        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv",
+                        "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/races.csv",
                         "format": {
                             "type": "csv"
                         }
@@ -110,7 +110,7 @@
                             "lookup": "circuitId",
                             "from": {
                                 "data": {
-                                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv"
+                                    "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits.csv"
                                 },
                                 "key": "circuitId",
                                 "fields": [
@@ -240,7 +240,7 @@
         },
         {
             "data": {
-                "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv",
+                "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/races.csv",
                 "format": {
                     "type": "csv"
                 }
@@ -250,7 +250,7 @@
                     "lookup": "circuitId",
                     "from": {
                         "data": {
-                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv"
+                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits.csv"
                         },
                         "key": "circuitId",
                         "fields": [
@@ -331,7 +331,7 @@
             "width": 1100,
             "height": 130,
             "data": {
-                "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv",
+                "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/races.csv",
                 "format": {
                     "type": "csv"
                 }
@@ -344,7 +344,7 @@
                     "lookup": "circuitId",
                     "from": {
                         "data": {
-                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/circuits.csv"
+                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/circuits.csv"
                         },
                         "key": "circuitId",
                         "fields": [
