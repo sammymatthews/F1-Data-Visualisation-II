@@ -8,7 +8,7 @@
     },
     "background": "transparent",
     "data": {
-        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/results.csv",
+        "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/results.csv",
         "format": {
             "type": "csv"
         }
@@ -33,7 +33,7 @@
             "lookup": "raceId",
             "from": {
                 "data": {
-                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv"
+                    "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/races.csv"
                 },
                 "key": "raceId",
                 "fields": [
@@ -45,7 +45,7 @@
             "lookup": "driverId",
             "from": {
                 "data": {
-                    "url": "./f1-data/drivers_cleaned.csv"
+                    "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/drivers_cleaned.csv"
                 },
                 "key": "driverId",
                 "fields": [
