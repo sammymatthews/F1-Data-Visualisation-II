@@ -169,10 +169,6 @@
                     "type": "quantitative"
                 },
                 "color": {
-                    "value": "#e16059",
-                    "legend": true
-                },
-                "color": {
                     "field": "direction",
                     "type": "nominal",
                     "scale": {
