@@ -24,7 +24,7 @@
         }
     },
     "data": {
-        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/results.csv",
+        "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/results.csv",
         "format": {
             "type": "csv"
         }
@@ -34,7 +34,7 @@
             "lookup": "driverId",
             "from": {
                 "data": {
-                    "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/drivers.csv"
+                    "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/drivers.csv"
                 },
                 "key": "driverId",
                 "fields": [
@@ -178,7 +178,7 @@
             "height": 200,
             "width": 700,
             "data": {
-                "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/driver_standings.csv",
+                "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/driver_standings.csv",
                 "format": {
                     "type": "csv"
                 }
@@ -192,7 +192,7 @@
                     "lookup": "driverId",
                     "from": {
                         "data": {
-                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/drivers.csv"
+                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/drivers.csv"
                         },
                         "key": "driverId",
                         "fields": [
@@ -216,7 +216,7 @@
                     "lookup": "raceId",
                     "from": {
                         "data": {
-                            "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/races.csv"
+                            "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/races.csv"
                         },
                         "key": "raceId",
                         "fields": [
