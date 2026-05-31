@@ -19,7 +19,7 @@
         }
     },
     "data": {
-        "url": "https://raw.githubusercontent.com/sammymatthews/fit2179/refs/heads/main/f1-data/constructors_cleaned.csv",
+        "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/constructors_cleaned.csv",
         "format": {
             "type": "csv"
         }
@@ -29,7 +29,7 @@
             "lookup": "country",
             "from": {
                 "data": {
-                    "url": "../f1-data/countries_to_continents.csv"
+                    "url": "https://raw.githubusercontent.com/sammymatthews/F1-Data-Visualisation-II/refs/heads/main/f1-data/countries_to_continents.csv"
                 },
                 "key": "Country",
                 "fields": [
